@@ -9,6 +9,8 @@ from langchain_community.document_loaders.pdf import AmazonTextractPDFLoader
 from langchain_core.documents import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from urllib.parse import urlparse
+from textractor import Textractor
+from textractor.data.constants import TextractFeatures
 
 class OcrService:
     def __init__(self):
@@ -51,16 +53,15 @@ class OcrService:
         document_uuid = str(uuid.uuid4())
         
         try:
-            loader = AmazonTextractPDFLoader(file_path=uri, client=self.textract_client)
-            text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-            split_docs = loader.load_and_split(text_splitter=text_splitter)
+            extractor = Textractor()
+            document = extractor.analyze_document(
+                file_source=uri,
+                features=[TextractFeatures.FORMS],
+                save_image=False
+            )
             
-            for i, doc in enumerate(split_docs):
-                doc.metadata['title'] = file_name
-                doc.metadata['link'] = uri
-                doc.metadata['chunk_id'] = str(i)
-                doc.metadata['id'] = document_uuid
-                documents.append(doc)
+            print("Key values:")
+            print(document.key_values)
                 
             return documents
         except Exception as ex:
