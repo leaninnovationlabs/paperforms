@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from api.routes.router import router
+import dotenv
+
+dotenv.load_dotenv()
 
 def create_app():
     app = FastAPI(
@@ -8,7 +11,7 @@ def create_app():
         version="1.0",
         description="1099 Validator API"
     )
-    
+
     app.include_router(router)
-       
+
     return app
