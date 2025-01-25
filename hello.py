@@ -1,5 +1,5 @@
 def main():
-    print("Hello from 1099-validator!")
+    print("Hello from w9-validator!")
 
 
 if __name__ == "__main__":
