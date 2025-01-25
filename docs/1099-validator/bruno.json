@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "1099-validator",
+  "name": "w9-validator",
   "type": "collection",
   "ignore": [
     "node_modules",

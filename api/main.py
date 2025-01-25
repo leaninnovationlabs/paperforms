@@ -7,9 +7,9 @@ dotenv.load_dotenv()
 
 def create_app():
     app = FastAPI(
-        title="1099 Validator API",
+        title="W9 Validator API",
         version="1.0",
-        description="1099 Validator API"
+        description="W9 Validator API"
     )
 
     app.include_router(router)
