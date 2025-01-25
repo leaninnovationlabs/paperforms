@@ -7,6 +7,7 @@ import boto3
 from botocore.exceptions import ClientError
 from langchain_community.document_loaders.pdf import AmazonTextractPDFLoader
 from langchain_core.documents import Document
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from urllib.parse import urlparse
 
 class OcrService:
@@ -45,17 +46,15 @@ class OcrService:
 
     async def load_document(self, uri: str) -> List[Document]:
         documents = []
-        print("1")
         key = urlparse(uri).path.lstrip('/')
         file_name = key.split('/')[-1]
         document_uuid = str(uuid.uuid4())
         
         try:
-            print("2")
             loader = AmazonTextractPDFLoader(file_path=uri, client=self.textract_client)
-            split_docs = loader.load_and_split()
+            text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+            split_docs = loader.load_and_split(text_splitter=text_splitter)
             
-            print("3")
             for i, doc in enumerate(split_docs):
                 doc.metadata['title'] = file_name
                 doc.metadata['link'] = uri
@@ -63,7 +62,6 @@ class OcrService:
                 doc.metadata['id'] = document_uuid
                 documents.append(doc)
                 
-            print("4")
             return documents
         except Exception as ex:
             print("Error: ", ex)
@@ -77,12 +75,11 @@ class OcrService:
                 raise HTTPException(status_code=500, detail="Failed to upload file to S3")
             
             s3_uri = f"s3://{self.bucket_name}/{file.filename}"
-            print("New URI: ", s3_uri)
             
             print("-- Processing step --")
             documents = await self.load_document(s3_uri)
-            for doc, i in enumerate(documents):
-                print("Document ", i, ": ", doc)
+            for i, doc in enumerate(documents):
+                print("Chunk ", i, " --- Document: ", doc)
             
         except Exception as e:
             print("Error")
