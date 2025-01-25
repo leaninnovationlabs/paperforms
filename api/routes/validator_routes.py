@@ -17,7 +17,7 @@ async def validate_1099(
 ):
     try:
         ocr_service = OcrService()
-        await ocr_service.process_file(file)
+        await ocr_service.upload_and_process_file(file)
         return JSONResponse(status_code=200, content={"file_size": file.size})
     except HTTPException as http_ex:
         raise http_ex
