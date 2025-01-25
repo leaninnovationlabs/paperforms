@@ -1,14 +1,14 @@
-async def app(scope, receive, send):
-    assert scope['type'] == 'http'
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+from api.routes.router import router
 
-    await send({
-        'type': 'http.response.start',
-        'status': 200,
-        'headers': [
-            [b'content-type', b'text/plain'],
-        ],
-    })
-    await send({
-        'type': 'http.response.body',
-        'body': b'Hello, world!',
-    })
+def create_app():
+    app = FastAPI(
+        title="1099 Validator API",
+        version="1.0",
+        description="1099 Validator API"
+    )
+    
+    app.include_router(router)
+       
+    return app
