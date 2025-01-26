@@ -1,7 +1,6 @@
 from fastapi import UploadFile, HTTPException
 import os
 import logging
-import uuid
 from typing import List
 import boto3
 from botocore.exceptions import ClientError
@@ -73,17 +72,18 @@ class OcrService:
             return dict()
 
 
-    async def upload_and_process_file(self, file: UploadFile):
+    async def upload_and_process_file(self, file: UploadFile) -> dict:
         try:
-            print("-- Upload step --")
+            print("-- Upload Step --")
             if not await self.upload_file(file=file):
                 raise HTTPException(status_code=500, detail="Failed to upload file to S3")
             
             s3_uri = f"s3://{self.bucket_name}/{file.filename}"
             
-            print("-- Processing step --")
+            print("-- Processing Step --")
             key_values = await self.extract_key_values(s3_uri)
-            print(key_values)
+            return key_values
             
         except Exception as e:
-            print("Error")
+            print("Error: ", e)
+            return dict()
