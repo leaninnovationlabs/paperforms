@@ -2,7 +2,6 @@ from api.util.types import DocumentType
 from api.util.rules import RulesUtil
 
 def construct_validation_prompt(doc_type, key_values: dict) -> str:
-    # Role, Task, Requirements, Instructions
     if (doc_type == DocumentType.W2):
         rules = RulesUtil.get_w2_rules()
     
