@@ -23,8 +23,9 @@ async def validate_w9(
         key_values = await ocr_service.upload_and_process_file(file)
 
         llm_service = LlmService(doc_type=DocumentType.W9, key_values=key_values)
-        llm_service.validate_with_llm()
-        return JSONResponse(status_code=200, content={"file_size": file.size})
+        prompt_response = llm_service.validate_with_llm()
+        
+        return JSONResponse(status_code=200, content={"response": prompt_response})
     except HTTPException as http_ex:
         raise http_ex
     except Exception as ex:

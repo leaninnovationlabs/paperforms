@@ -25,3 +25,5 @@ class LlmService:
         prompt = construct_validation_prompt(self.doc_type, self.key_values)
         print(prompt)
         
+        response = self.llm.invoke(prompt)
+        return response.content
