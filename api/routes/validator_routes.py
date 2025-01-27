@@ -5,6 +5,8 @@ from api.services.ocr_service import OcrService
 from api.services.llm_service import LlmService
 from api.util.logging import SetupLogging
 
+from api.util.types import DocumentType
+
 router = APIRouter()
 logger = SetupLogging()
 
@@ -20,8 +22,8 @@ async def validate_w9(
         ocr_service = OcrService()
         key_values = await ocr_service.upload_and_process_file(file)
 
-        llm_service = LlmService()
-        await llm_service.validate_with_llm()
+        llm_service = LlmService(doc_type=DocumentType.W9, key_values=key_values)
+        llm_service.validate_with_llm()
         return JSONResponse(status_code=200, content={"file_size": file.size})
     except HTTPException as http_ex:
         raise http_ex

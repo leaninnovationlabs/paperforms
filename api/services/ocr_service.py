@@ -82,6 +82,7 @@ class OcrService:
             
             print("-- Processing Step --")
             key_values = await self.extract_key_values(s3_uri)
+            print(key_values)
             return key_values
             
         except Exception as e:
