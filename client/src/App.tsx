@@ -1,10 +1,9 @@
 import './App.css'
+import UploadPage from './features/Upload.page'
 
 function App() {
   return (
-    <>
-      <div>Tax Form Validator</div>
-    </>
+    <UploadPage />
   )
 }
 

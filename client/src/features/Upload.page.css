@@ -1,0 +1,35 @@
+.layout {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+}
+
+.title {
+  position: relative;
+  margin-top: 1rem;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.main-content {
+  flex-grow: 1;
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.drop-area {
+    height: 240px;
+}
+
+.validate-button {
+    min-width: 180px;
+    padding: 0.5rem 0.75rem;
+
+    background-color: rgb(34, 167, 34);
+    color: white;
+    border-radius: 8px;
+}
