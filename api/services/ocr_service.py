@@ -1,7 +1,6 @@
 from fastapi import UploadFile, HTTPException
 import os
 import logging
-import uuid
 from typing import List
 import boto3
 from botocore.exceptions import ClientError
@@ -10,6 +9,8 @@ from langchain_core.documents import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from urllib.parse import urlparse
 from textractor import Textractor
+from textractor.entities.key_value import KeyValue
+from textractor.visualizers.entitylist import EntityList
 from textractor.data.constants import TextractFeatures
 
 class OcrService:
@@ -46,12 +47,7 @@ class OcrService:
             logging.error(ex)
             return False
 
-    async def load_document(self, uri: str) -> List[Document]:
-        documents = []
-        key = urlparse(uri).path.lstrip('/')
-        file_name = key.split('/')[-1]
-        document_uuid = str(uuid.uuid4())
-        
+    async def extract_key_values(self, uri: str) -> dict:
         try:
             extractor = Textractor()
             document = extractor.analyze_document(
@@ -59,28 +55,36 @@ class OcrService:
                 features=[TextractFeatures.FORMS],
                 save_image=False
             )
-            
-            print("Key values:")
-            print(document.key_values)
-                
-            return documents
+
+            key_values_unprocessed = document.key_values
+            key_values = dict()
+
+            for kv in list(key_values_unprocessed):
+                kv: KeyValue
+                key = kv.key.get_text()
+                val = kv.value.get_text()
+                key_values[key] = val
+
+            return key_values
+
         except Exception as ex:
             print("Error: ", ex)
-            return []
-            
+            return dict()
 
-    async def upload_and_process_file(self, file: UploadFile):
+
+    async def upload_and_process_file(self, file: UploadFile) -> dict:
         try:
-            print("-- Upload step --")
+            print("-- Upload Step --")
             if not await self.upload_file(file=file):
                 raise HTTPException(status_code=500, detail="Failed to upload file to S3")
             
             s3_uri = f"s3://{self.bucket_name}/{file.filename}"
             
-            print("-- Processing step --")
-            documents = await self.load_document(s3_uri)
-            for i, doc in enumerate(documents):
-                print("Chunk ", i, " --- Document: ", doc)
+            print("-- Processing Step --")
+            key_values = await self.extract_key_values(s3_uri)
+            print(key_values)
+            return key_values
             
         except Exception as e:
-            print("Error")
+            print("Error: ", e)
+            return dict()
