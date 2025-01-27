@@ -2,6 +2,7 @@ import os
 from langchain_openai.chat_models import ChatOpenAI
 from api.util.types import DocumentType
 from api.util.prompts import construct_validation_prompt
+import json
 
 class LlmService:
     def __init__(self, doc_type, key_values: dict):
@@ -23,7 +24,9 @@ class LlmService:
     def validate_with_llm(self):
         print("-- Validation Step --")
         prompt = construct_validation_prompt(self.doc_type, self.key_values)
-        print(prompt)
-        
         response = self.llm.invoke(prompt)
-        return response.content
+
+        json_cleaned = response.content.replace('```json', '').replace('```', '')
+        json_output = json.loads(json_cleaned)
+
+        return json_output
