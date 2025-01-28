@@ -1,8 +1,18 @@
+import { useState } from "react";
 import Hamburger from "../components/hamburger/Hamburger.component";
 import Logo from "../components/logo/Logo.component";
 import "./Upload.page.css";
+import RulesModal from "../components/rules/RulesModal.component";
+import { rulesTextW9 } from "../data/rules/Rules.data";
 
 const UploadPage = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [rulesText, setRulesText] = useState(rulesTextW9);
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
   const renderSelect = () => {
     return (
       <div className="select-area">
@@ -12,7 +22,12 @@ const UploadPage = () => {
             <option value="w2">W2</option>
           </select>
         </div>
-        <div className="rules-button">
+        <div
+          className="rules-button"
+          onClick={() => {
+            toggleModal();
+          }}
+        >
           <Hamburger />
         </div>
       </div>
@@ -34,6 +49,13 @@ const UploadPage = () => {
         </label>
         <div className="validate-button">Validate!</div>
       </main>
+      {showModal && (
+        <RulesModal
+          rulesText={rulesText}
+          setRulesText={setRulesText}
+          handleClose={toggleModal}
+        />
+      )}
     </div>
   );
 };
