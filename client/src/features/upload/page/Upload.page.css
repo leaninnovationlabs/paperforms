@@ -128,11 +128,9 @@
 #results-section {
   background-color: #eaeaea;
   width: calc(100% - 2rem);
-  min-height: calc(100vh - 2rem);
   margin-top: 6rem;
 
-  padding-inline: 1rem;
+  padding: 0 1rem 5rem 1rem;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-flow: column nowrap;
 }

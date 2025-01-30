@@ -1,11 +1,12 @@
 .results-header {
   width: 420px;
+  height: 50px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: flex-end;
 
-  margin: 0 auto 2rem auto;
+  margin: 0.5rem auto 2rem auto;
 }
 
 .results-title {
@@ -17,6 +18,14 @@
   font-size: 16px;
   font-weight: 600;
   color: rgb(80, 80, 80);
+}
+
+.results-section-main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  padding-top: 1.5rem;
 }
 
 .result-item {
@@ -49,4 +58,11 @@
 .result-item-value {
   color: #5e5e5e;
   font-weight: 500;
+}
+
+.return-to-top {
+    width: 420px;
+    margin: 3.5rem auto 0 auto;
+    align-self: flex-end;
+    text-align: right;
 }

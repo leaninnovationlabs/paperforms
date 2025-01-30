@@ -10,12 +10,12 @@ const Results = (props: IResultsProps) => {
   const numberOfErrors = results.length;
 
   return (
-    <div>
+    <>
       <div className="results-header">
         <div className="results-title">Validation Results</div>
         <div className="results-summary">{numberOfErrors} Errors</div>
       </div>
-      <div>
+      <div className="results-section-main-content">
         {results.map((result, i) => {
           if (Object.keys(result).length !== 1) return;
 
@@ -30,8 +30,9 @@ const Results = (props: IResultsProps) => {
             </div>
           );
         })}
+        <div className="return-to-top">Return to top</div>
       </div>
-    </div>
+    </>
   );
 };
 
