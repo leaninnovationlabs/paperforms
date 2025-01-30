@@ -5,11 +5,16 @@ import "./Upload.page.css";
 import RulesModal from "../../../components/rules/RulesModal.component";
 import { rulesTextW9 } from "../../../data/rules/Rules.data";
 import ValidationService from "../../../service/validation.service";
+import Results from "../../../components/results/Results.component";
+import { IValidationRequirements } from "../store/upload.types";
 
 const UploadPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [rulesText, setRulesText] = useState(rulesTextW9);
+
+  // const [isLoading, setIsLoading] = useState(false);
+  const [results, setResults] = useState<IValidationRequirements | null>(null);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -35,6 +40,7 @@ const UploadPage = () => {
       formData
     );
 
+    setResults(validationResponse.response);
     console.log("Response: " + JSON.stringify(validationResponse));
   };
 
@@ -56,6 +62,12 @@ const UploadPage = () => {
           <Hamburger />
         </div>
       </div>
+    );
+  };
+
+  const renderResultsSection = () => {
+    return (
+      <div id="results-section">{results && <Results results={results} />}</div>
     );
   };
 
@@ -87,6 +99,7 @@ const UploadPage = () => {
         >
           Validate!
         </div>
+        {renderResultsSection()}
       </main>
       {showModal && (
         <RulesModal

@@ -3,6 +3,8 @@ export interface IValidateRequest {
   rules: string;
 }
 
+export type IValidationRequirement = Record<string, string>;
+export type IValidationRequirements = Array<IValidationRequirement>;
 export interface IValidateResponse {
-  response: Record<string, string>;
+  response: Array<IValidationRequirement>;
 }
