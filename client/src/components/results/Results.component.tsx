@@ -1,4 +1,5 @@
 import { IValidationRequirements } from "../../features/upload/store/upload.types";
+import "./Results.component.css";
 
 export interface IResultsProps {
   results: IValidationRequirements;
@@ -9,7 +10,7 @@ const Results = (props: IResultsProps) => {
 
   return (
     <div>
-      Results
+      <div className="results-title">Validation Results</div>
       <div>
         {results.map((result, i) => {
           if (Object.keys(result).length !== 1) return;

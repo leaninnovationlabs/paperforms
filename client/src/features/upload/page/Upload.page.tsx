@@ -13,7 +13,7 @@ const UploadPage = () => {
   const [file, setFile] = useState<File | null>(null);
   const [rulesText, setRulesText] = useState(rulesTextW9);
 
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<IValidationRequirements | null>(null);
 
   const toggleModal = () => {
@@ -35,11 +35,13 @@ const UploadPage = () => {
     formData.append("rules", rulesText);
     formData.append("file", file);
 
+    setIsLoading(true);
     const validationService = new ValidationService();
     const validationResponse = await validationService.validateTaxForm(
       formData
     );
 
+    setIsLoading(false);
     setResults(validationResponse.response);
     console.log("Response: " + JSON.stringify(validationResponse));
   };
@@ -67,7 +69,16 @@ const UploadPage = () => {
 
   const renderResultsSection = () => {
     return (
-      <div id="results-section">{results && <Results results={results} />}</div>
+      <>
+        {!!results || isLoading ? (
+          <div id="results-section">
+            {isLoading && <div>Loading...</div>}
+            {results && <Results results={results} />}
+          </div>
+        ) : (
+          <div></div>
+        )}
+      </>
     );
   };
 
