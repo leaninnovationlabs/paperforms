@@ -3,10 +3,11 @@ import "./Results.component.css";
 
 export interface IResultsProps {
   results: IValidationRequirements;
+  handleReturnToTop: () => void;
 }
 
 const Results = (props: IResultsProps) => {
-  const { results } = props;
+  const { results, handleReturnToTop } = props;
   const numberOfErrors = results.length;
 
   return (
@@ -30,7 +31,7 @@ const Results = (props: IResultsProps) => {
             </div>
           );
         })}
-        <div className="return-to-top">Return to top</div>
+        <div className="return-to-top" onClick={handleReturnToTop}>Return to top</div>
       </div>
     </>
   );

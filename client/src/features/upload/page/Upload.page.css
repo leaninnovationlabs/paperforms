@@ -5,13 +5,14 @@
   height: 100%;
 }
 
-.header {
+#header {
   height: 50px;
   width: calc(100% - 4rem);
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   padding: 0rem 2rem 1rem 2rem;
+  flex-shrink: 0;
 
   background-color: #fff;
   box-shadow: 0px 10px 8px 0px rgba(209, 209, 209, 0.5);
@@ -32,6 +33,7 @@
 .empty-space {
   height: 100%;
   width: 80px;
+  flex-shrink: 0;
 }
 
 .main-content {

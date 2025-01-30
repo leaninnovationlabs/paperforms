@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Hamburger from "../../../components/hamburger/Hamburger.component";
 import Logo from "../../../components/logo/Logo.component";
 import "./Upload.page.css";
@@ -15,6 +15,9 @@ const UploadPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<IValidationRequirements | null>(null);
+
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const resultsRef = useRef<HTMLDivElement | null>(null);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -44,7 +47,17 @@ const UploadPage = () => {
 
     setIsLoading(false);
     setResults(validationResponse.response);
-    console.log("Response: " + JSON.stringify(validationResponse));
+    if (resultsRef.current) {
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView();
+      }, 10);
+    }
+  };
+
+  const handleReturnToTop = () => {
+    if (headerRef.current) {
+      headerRef.current.scrollIntoView();
+    }
   };
 
   const renderSelect = () => {
@@ -72,9 +85,14 @@ const UploadPage = () => {
     return (
       <>
         {!!results || isLoading ? (
-          <div id="results-section">
+          <div id="results-section" ref={resultsRef}>
             {isLoading && <div>Loading...</div>}
-            {results && <Results results={results} />}
+            {results && (
+              <Results
+                results={results}
+                handleReturnToTop={handleReturnToTop}
+              />
+            )}
           </div>
         ) : (
           <div></div>
@@ -85,7 +103,7 @@ const UploadPage = () => {
 
   return (
     <div className="layout">
-      <div className="header">
+      <div id="header" ref={headerRef}>
         <Logo />
         <div className="title">Tax Form Validator</div>
         <div className="empty-space"></div>
