@@ -1,4 +1,4 @@
-from fastapi import APIRouter, File, UploadFile, HTTPException
+from fastapi import APIRouter, File, Form, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 
 from api.services.ocr_service import OcrService
@@ -16,13 +16,14 @@ async def ping():
 
 @router.post("")
 async def validate_w9(
-    file: UploadFile = File(...)
+    file: UploadFile = File(...),
+    rules: str = Form(...)
 ):
     try:
         ocr_service = OcrService()
         key_values = await ocr_service.upload_and_process_file(file)
 
-        llm_service = LlmService(doc_type=DocumentType.W9, key_values=key_values)
+        llm_service = LlmService(doc_type=DocumentType.W9, rules=rules, key_values=key_values)
         prompt_response = llm_service.validate_with_llm()
         
         return JSONResponse(status_code=200, content={"response": prompt_response})
