@@ -128,8 +128,11 @@
 #results-section {
   background-color: #eaeaea;
   width: calc(100% - 2rem);
-  min-height: 480px;
+  min-height: calc(100vh - 2rem);
   margin-top: 6rem;
 
-  padding: 2rem 1rem 6rem 1rem;
+  padding-inline: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

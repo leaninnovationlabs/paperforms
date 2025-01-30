@@ -35,6 +35,7 @@ const UploadPage = () => {
     formData.append("rules", rulesText);
     formData.append("file", file);
 
+    setResults(null);
     setIsLoading(true);
     const validationService = new ValidationService();
     const validationResponse = await validationService.validateTaxForm(
