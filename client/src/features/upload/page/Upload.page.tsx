@@ -7,6 +7,7 @@ import { rulesTextW9 } from "../../../data/rules/Rules.data";
 import ValidationService from "../../../service/validation.service";
 import Results from "../../../components/results/Results.component";
 import { IValidationRequirements } from "../store/upload.types";
+import { RotatingLines } from "react-loader-spinner";
 
 const UploadPage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -40,6 +41,13 @@ const UploadPage = () => {
 
     setResults(null);
     setIsLoading(true);
+
+    if (resultsRef.current) {
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView();
+      }, 0);
+    }
+
     const validationService = new ValidationService();
     const validationResponse = await validationService.validateTaxForm(
       formData
@@ -47,11 +55,6 @@ const UploadPage = () => {
 
     setIsLoading(false);
     setResults(validationResponse.response);
-    if (resultsRef.current) {
-      setTimeout(() => {
-        resultsRef.current?.scrollIntoView();
-      }, 10);
-    }
   };
 
   const handleReturnToTop = () => {
@@ -86,7 +89,19 @@ const UploadPage = () => {
       <>
         {!!results || isLoading ? (
           <div id="results-section" ref={resultsRef}>
-            {isLoading && <div>Loading...</div>}
+            {isLoading && (
+              <div className="loader-container">
+                <RotatingLines
+                  visible={true}
+                  width="26"
+                  strokeColor="grey"
+                  strokeWidth="5"
+                  animationDuration="0.75"
+                  ariaLabel="rotating-lines-loading"
+                />
+                <div>Extracting responses and running AI-powered validation</div>
+              </div>
+            )}
             {results && (
               <Results
                 results={results}

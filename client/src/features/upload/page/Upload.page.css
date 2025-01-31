@@ -129,10 +129,21 @@
 
 #results-section {
   background-color: #eaeaea;
+  min-height: 410px;
   width: calc(100% - 2rem);
   margin-top: 6rem;
 
   padding: 0 1rem 5rem 1rem;
   display: flex;
   flex-flow: column nowrap;
+}
+
+.loader-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
 }

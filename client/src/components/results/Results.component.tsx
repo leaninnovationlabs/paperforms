@@ -14,7 +14,14 @@ const Results = (props: IResultsProps) => {
     <>
       <div className="results-header">
         <div className="results-title">Validation Results</div>
-        <div className="results-summary">{numberOfErrors} Errors</div>
+        <div className="results-summary">
+          <div className="results-button">{numberOfErrors}</div>
+          <div> Errors</div>
+        </div>
+      </div>
+      <div className="results-description">
+        The following errors were found in your form, based on the validation
+        rules you provided. Please resolve the issues and re-submit.
       </div>
       <div className="results-section-main-content">
         {results.map((result, i) => {
@@ -31,7 +38,9 @@ const Results = (props: IResultsProps) => {
             </div>
           );
         })}
-        <div className="return-to-top" onClick={handleReturnToTop}>Return to top</div>
+        <div className="return-to-top" onClick={handleReturnToTop}>
+          Return to top
+        </div>
       </div>
     </>
   );
