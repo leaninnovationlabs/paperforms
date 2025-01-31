@@ -99,7 +99,9 @@ const UploadPage = () => {
                   animationDuration="0.75"
                   ariaLabel="rotating-lines-loading"
                 />
-                <div>Extracting responses and running AI-powered validation</div>
+                <div>
+                  Extracting responses and running AI-powered validation
+                </div>
               </div>
             )}
             {results && (
@@ -134,7 +136,7 @@ const UploadPage = () => {
           onChange={(e) => handleFileChange(e)}
         />
         <label htmlFor="file" className="file-input">
-          Upload Here
+          {file ? <>{file.name}</> : <>Upload Here</>}
         </label>
         <div
           className="validate-button"
@@ -142,7 +144,7 @@ const UploadPage = () => {
             handleValidate();
           }}
         >
-          Validate!
+          Validate
         </div>
         {renderResultsSection()}
       </main>
