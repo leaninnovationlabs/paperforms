@@ -132,7 +132,7 @@ const UploadPage = () => {
           id="file"
           hidden
           name="file"
-          accept=".pdf"
+          accept=".pdf,.png"
           onChange={(e) => handleFileChange(e)}
         />
         <label htmlFor="file" className="file-input">
