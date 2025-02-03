@@ -10,6 +10,11 @@ post {
   auth: none
 }
 
+headers {
+  Content-Type: application/json
+}
+
 body:multipart-form {
-  file: @file()
+  file: @file(/Users/camilo/Documents/inputs/w9-validator/w9-filled.pdf)
+  rules: The name of the entity or individual is required. Address is required. City, state, and ZIP code are required. Social security number is required. Signature is required. Date is required.
 }

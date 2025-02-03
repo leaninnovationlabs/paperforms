@@ -5,7 +5,7 @@ from api.util.prompts import construct_validation_prompt
 import json
 
 class LlmService:
-    def __init__(self, doc_type, key_values: dict):
+    def __init__(self, doc_type, rules, key_values: dict):
         self.openai_key = os.getenv("OPENAI_API_KEY")
         
         self.llm = ChatOpenAI(
@@ -19,13 +19,17 @@ class LlmService:
         )
         
         self.doc_type = doc_type
+        self.rules = rules
         self.key_values = key_values
 
     def validate_with_llm(self):
         print("-- Validation Step --")
-        prompt = construct_validation_prompt(self.doc_type, self.key_values)
+        prompt = construct_validation_prompt(self.doc_type, self.rules, self.key_values)
+        print(f"Prompt: {prompt}")
+        
         response = self.llm.invoke(prompt)
 
+        print(f"Response: {response}")
         json_cleaned = response.content.replace('```json', '').replace('```', '')
         json_output = json.loads(json_cleaned)
 
