@@ -16,6 +16,8 @@ const UploadPage = () => {
   const [rulesText, setRulesText] = useState(rulesTextW9);
   const [fieldsText, setFieldsText] = useState(fieldsTextW9);
 
+  // const [formResponses, setFormResponses] = useState<string | null>(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<IValidationRequirements | null>(null);
 
@@ -54,16 +56,18 @@ const UploadPage = () => {
     const validationResponse = await validationService.cleanFields(formData);
 
     setIsLoading(false);
+
     console.log("Responses: " + validationResponse.response);
-    // setResults(validationResponse.response);
+    const formResponses = validationResponse.response;
+    handleValidate(formResponses);
   };
 
-  const handleValidate = async () => {
+  const handleValidate = async (formResponses: string) => {
     if (!file) return;
 
     const formData = new FormData();
     formData.append("rules", rulesText);
-    formData.append("file", file);
+    formData.append("form_responses", formResponses || "");
 
     setResults(null);
     setIsLoading(true);
@@ -80,7 +84,11 @@ const UploadPage = () => {
     );
 
     setIsLoading(false);
-    setResults(validationResponse.response);
+    if (Array.isArray(validationResponse.response)) {
+      setResults(validationResponse.response);
+    } else {
+      setResults([]);
+    }
   };
 
   const handleReturnToTop = () => {
@@ -147,7 +155,9 @@ const UploadPage = () => {
   return (
     <div className="layout">
       <div id="header" ref={headerRef}>
-        <Logo />
+        <a href="https://www.leaninnovationlabs.com/">
+          <Logo />
+        </a>
         <div className="title">Tax Form Validator</div>
         <div className="empty-space"></div>
       </div>
@@ -167,9 +177,6 @@ const UploadPage = () => {
         <div
           className="validate-button"
           onClick={() => {
-            if (file?.name === "test") {
-              handleValidate();
-            }
             handleCleanup();
           }}
         >
