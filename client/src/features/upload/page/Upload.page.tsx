@@ -21,6 +21,8 @@ const UploadPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<IValidationRequirements | null>(null);
 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const headerRef = useRef<HTMLDivElement | null>(null);
   const resultsRef = useRef<HTMLDivElement | null>(null);
 
@@ -45,6 +47,7 @@ const UploadPage = () => {
 
     setResults(null);
     setIsLoading(true);
+    setErrorMessage(null);
 
     if (resultsRef.current) {
       setTimeout(() => {
@@ -63,31 +66,41 @@ const UploadPage = () => {
   };
 
   const handleValidate = async (formResponses: string) => {
-    if (!file) return;
+    try {
+      if (!file) return;
 
-    const formData = new FormData();
-    formData.append("rules", rulesText);
-    formData.append("form_responses", formResponses || "");
+      const formData = new FormData();
+      formData.append("rules", rulesText);
+      formData.append("form_responses", formResponses || "");
 
-    setResults(null);
-    setIsLoading(true);
+      setResults(null);
+      setIsLoading(true);
 
-    if (resultsRef.current) {
-      setTimeout(() => {
-        resultsRef.current?.scrollIntoView();
-      }, 0);
-    }
+      if (resultsRef.current) {
+        setTimeout(() => {
+          resultsRef.current?.scrollIntoView();
+        }, 0);
+      }
 
-    const validationService = new ValidationService();
-    const validationResponse = await validationService.validateTaxForm(
-      formData
-    );
+      const validationService = new ValidationService();
+      const validationResponse = await validationService.validateTaxForm(
+        formData
+      );
 
-    setIsLoading(false);
-    if (Array.isArray(validationResponse.response)) {
-      setResults(validationResponse.response);
-    } else {
-      setResults([]);
+      if (!Object.keys(validationResponse).includes("response")) {
+        throw Error("Internal server error");
+      }
+
+      setIsLoading(false);
+      if (Array.isArray(validationResponse.response)) {
+        setResults(validationResponse.response);
+      } else {
+        setResults([]);
+      }
+    } catch (err) {
+      setIsLoading(false);
+      console.log(err);
+      setErrorMessage("Internal server error");
     }
   };
 
@@ -121,7 +134,7 @@ const UploadPage = () => {
   const renderResultsSection = () => {
     return (
       <>
-        {!!results || isLoading ? (
+        {!!results || errorMessage || isLoading ? (
           <div id="results-section" ref={resultsRef}>
             {isLoading && (
               <div className="loader-container">
@@ -138,9 +151,10 @@ const UploadPage = () => {
                 </div>
               </div>
             )}
-            {results && (
+            {(results || errorMessage) && (
               <Results
-                results={results}
+                results={results || []}
+                errorMessage={errorMessage}
                 handleReturnToTop={handleReturnToTop}
               />
             )}

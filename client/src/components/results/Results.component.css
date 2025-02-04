@@ -40,6 +40,10 @@
   font-weight: 600;
 }
 
+.success-button {
+  background-color: rgb(34, 166, 34);
+}
+
 .results-description {
   width: 480px;
   padding-bottom: 1.5rem;
@@ -100,4 +104,22 @@
 
   color: rgb(52, 92, 180);
   font-weight: 500;
+}
+
+.success-section {
+  margin-block: 2rem;
+}
+
+.success-icon {
+  width: 60px;
+  margin: 0 auto 1rem auto;
+}
+
+.success-icon svg {
+  fill: rgb(34, 166, 34);
+}
+
+.success-section-text {
+  width: 280px;
+  margin: 0 auto;
 }
