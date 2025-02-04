@@ -30,6 +30,7 @@ class ValidationService:
 
         print(f"Response: {response}")
         json_cleaned = response.content.replace('```json', '').replace('```', '')
+        print("JSON cleaned: " + json_cleaned)
         json_output = json.loads(json_cleaned)
 
         return json_output

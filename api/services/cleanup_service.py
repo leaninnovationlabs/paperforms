@@ -2,6 +2,7 @@ import os
 from langchain_openai.chat_models import ChatOpenAI
 from api.util.types import DocumentType
 from api.util.prompts import construct_validation_prompt, construct_cleanup_prompt
+import re
 
 class CleanupService:
     def __init__(self, doc_type, key_values: dict, fields):
@@ -29,4 +30,5 @@ class CleanupService:
         response = self.llm.invoke(prompt)
         print(f"Response: {response.content}")
         
-        return response.content
+        trimmed_content = re.sub(r'(\d)\s+-\s+(\d)', r'\1-\2', response.content)
+        return trimmed_content

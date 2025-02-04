@@ -7,7 +7,7 @@ def construct_cleanup_prompt(fields: str, key_values: dict) -> str:
     return prompt
 
 def construct_validation_prompt(doc_type, rules: str, form_responses: str) -> str:    
-    initial_task = f"You are a helpful assistant responsible for validating a {doc_type} tax form with a given set of rules. Using the form responses and rules, provide a list of required changes to the document, written only in JSON. Do not send back any response that is not JSON. **Only send back errors found in the list of rules!** If there are no errors, send back an empty object. The {doc_type} form will be given as a set of question-answer pairs, with the following example structure:\n"
+    initial_task = f"You are a helpful assistant responsible for validating a {doc_type} tax form with a given set of rules. Using the form responses and rules, provide a list of required changes to the document, written only in JSON, using double quotes. Do not send back any response that is not JSON. **Only send back errors found in the list of rules!** If there are no errors, send back an empty object. The {doc_type} form will be given as a set of question-answer pairs, with the following example structure:\n"
     example_input="```[{'Full name': 'John Doe'}, {'Date': '6/1/2024'}]```\n\n"
     example_output = "Here is an example of a valid output:\n ```[{'Date': 'Date must be in MM/DD/YYYY format'}, {'Social security number': 'Social security number cannot be blank'}]```\n\n"
     form_responses_section = f"Here is the list of form responses: \n{form_responses}\n\n"
