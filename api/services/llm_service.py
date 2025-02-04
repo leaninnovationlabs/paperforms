@@ -1,11 +1,11 @@
 import os
 from langchain_openai.chat_models import ChatOpenAI
 from api.util.types import DocumentType
-from api.util.prompts import construct_validation_prompt
+from api.util.prompts import construct_validation_prompt, construct_cleanup_prompt
 import json
 
 class LlmService:
-    def __init__(self, doc_type, rules, key_values: dict):
+    def __init__(self, doc_type, fields, key_values: dict):
         self.openai_key = os.getenv("OPENAI_API_KEY")
         
         self.llm = ChatOpenAI(
@@ -19,8 +19,19 @@ class LlmService:
         )
         
         self.doc_type = doc_type
-        self.rules = rules
+        self.fields = fields
+        # self.rules = rules
         self.key_values = key_values
+        
+    def clean_fields(self):
+        print("-- Cleanup Step --")
+        prompt = construct_cleanup_prompt(self.fields, self.key_values)
+        print(f"Prompt: {prompt}")
+        
+        response = self.llm.invoke(prompt)
+        print(f"Response: {response.content}")
+        
+        return response.content
 
     def validate_with_llm(self):
         print("-- Validation Step --")
