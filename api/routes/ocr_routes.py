@@ -2,7 +2,7 @@ from fastapi import APIRouter, File, Form, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 
 from api.services.ocr_service import OcrService
-from api.services.llm_service import LlmService
+from api.services.cleanup_service import CleanupService
 from api.util.logging import SetupLogging
 
 from api.util.types import DocumentType
@@ -22,9 +22,8 @@ async def get_form_responses(
         for key, value in key_values.items():
             print("- " + key + ": " + value)
 
-        llm_service = LlmService(doc_type=DocumentType.W9, fields=fields, key_values=key_values)
-        prompt_response = llm_service.clean_fields()
-        # prompt_response = llm_service.validate_with_llm()
+        cleanup_service = CleanupService(doc_type=DocumentType.W9, key_values=key_values, fields=fields)
+        prompt_response = cleanup_service.clean_fields()
         
         return JSONResponse(status_code=200, content={"response": prompt_response})
     except HTTPException as http_ex:
