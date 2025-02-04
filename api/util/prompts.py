@@ -1,5 +1,5 @@
 def construct_cleanup_prompt(fields: str, key_values: dict) -> str:
-    initial_task = "You are a helpful assistant responsible for cleaning up a series of key value pairs. Remove any keys that are not found in the list of fields. Also simplify the field names in the key value pairs to match the names used in the fields string Return the result as a bulleted list of fields with their corresponsing responses.\n\n"
+    initial_task = "You are a helpful assistant responsible for cleaning up a series of key value pairs. Remove any keys that are not found in the list of fields. Also simplify the field names in the key value pairs to match the names used in the fields string Return the result as a bulleted list of fields with their corresponsing responses. Offer no introduction or explanation.\n\n"
     key_value_input=f"Here is the list of key-value pairs: {key_values}\n\n"
     fields_input=f"Here is the list of field names: {fields}\n"
     
