@@ -1,5 +1,8 @@
 import uvicorn
 from api.main import create_app
+import dotenv
+dotenv.load_dotenv()
+
 
 # Initialize the FastAPI server
 app = create_app()
