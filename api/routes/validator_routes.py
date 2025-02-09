@@ -14,7 +14,7 @@ async def ping():
     return JSONResponse(status_code=200, content={"message": "pong"})
 
 @router.post("")
-async def validate_w9(
+async def validate_form(
     form_responses: str = Form(...),
     rules: str = Form(...)
 ):
@@ -26,6 +26,6 @@ async def validate_w9(
     except HTTPException as http_ex:
         raise http_ex
     except Exception as ex:
-        logger.error(f"Unexpected error in in validate_w9 POST request: {str(ex)}", exc_info=True)
+        logger.error(f"Unexpected error in in validate_form POST request: {str(ex)}", exc_info=True)
         raise HTTPException(status_code=500, detail="Internal server error")
         

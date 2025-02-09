@@ -6,9 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 def create_app():
 
     app = FastAPI(
-        title="W9 Validator API",
+        title="Paperforms API",
         version="1.0",
-        description="W9 Validator API"
+        description="Paperforms API"
     )
 
     origins = [

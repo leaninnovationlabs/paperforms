@@ -172,7 +172,7 @@ const UploadPage = () => {
         <a href="https://www.leaninnovationlabs.com/">
           <Logo />
         </a>
-        <div className="title">Tax Form Validator</div>
+        <div className="title">Paperforms</div>
         <div className="empty-space"></div>
       </div>
       <main className="main-content">
@@ -186,7 +186,7 @@ const UploadPage = () => {
           onChange={(e) => handleFileChange(e)}
         />
         <label htmlFor="file" className="file-input">
-          {file ? <>{file.name}</> : <>Upload Here</>}
+          {file ? <>{file.name}</> : <>Upload Form to Validate Here</>}
         </label>
         <div
           className="validate-button"
