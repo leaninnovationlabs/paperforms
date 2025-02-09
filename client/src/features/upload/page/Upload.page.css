@@ -28,6 +28,8 @@
   position: relative;
   font-size: 22px;
   font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgb(157, 231, 157);
 }
 
 .empty-space {
