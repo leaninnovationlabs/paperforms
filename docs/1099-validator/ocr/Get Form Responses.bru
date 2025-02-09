@@ -5,13 +5,13 @@ meta {
 }
 
 post {
-  url: http://localhost:8080/w9-validator/v1/ocr
+  url: http://localhost:8080/paperforms/v1/ocr
   body: multipartForm
   auth: none
 }
 
 body:multipart-form {
-  file: @file()
+  file: @file(/Users/camilo/Documents/inputs/w9-validator/w9-date-issue.png)
   fields: '''
     - Name of entity/individual
     - Address
