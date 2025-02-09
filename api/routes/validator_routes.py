@@ -1,8 +1,7 @@
 from fastapi import APIRouter, File, Form, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 
-from api.services.ocr_service import OcrService
-from api.services.llm_service import LlmService
+from api.services.validation_service import ValidationService
 from api.util.logging import SetupLogging
 
 from api.util.types import DocumentType
@@ -16,15 +15,12 @@ async def ping():
 
 @router.post("")
 async def validate_w9(
-    file: UploadFile = File(...),
+    form_responses: str = Form(...),
     rules: str = Form(...)
 ):
     try:
-        ocr_service = OcrService()
-        key_values = await ocr_service.upload_and_process_file(file)
-
-        llm_service = LlmService(doc_type=DocumentType.W9, rules=rules, key_values=key_values)
-        prompt_response = llm_service.validate_with_llm()
+        validation_service = ValidationService(doc_type=DocumentType.W9, form_responses=form_responses, rules=rules)
+        prompt_response = validation_service.validate_with_llm()
         
         return JSONResponse(status_code=200, content={"response": prompt_response})
     except HTTPException as http_ex:

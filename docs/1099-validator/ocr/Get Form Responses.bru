@@ -1,0 +1,23 @@
+meta {
+  name: Get Form Responses
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/w9-validator/v1/ocr
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  file: @file()
+  fields: '''
+    - Name of entity/individual
+    - Address
+    - City, state, and ZIP code
+    - Social security number
+    - Signature
+    - Date
+  '''
+}
