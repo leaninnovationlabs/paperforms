@@ -1,8 +1,8 @@
-An AI pipeline to validate W9 tax forms. Built on the following technologies:
+An AI pipeline to validate all kinds of tax forms. Built on the following technologies:
 
 - uv (Project and package management)
 - uvicorn / FastAPI (REST API)
-- Amazon Textract (Parsing W9 forms)
+- Amazon Textract (Parsing tax forms)
 - OpenAI (Validating text)
 - React / Vite (Frontend)
 
