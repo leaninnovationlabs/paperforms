@@ -1,7 +1,7 @@
 [project]
-name = "w9-validator"
+name = "paperforms"
 version = "0.1.0"
-description = "Add your description here"
+description = "AI-powered validation for tax forms"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
