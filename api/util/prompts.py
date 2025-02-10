@@ -7,14 +7,20 @@ def construct_cleanup_prompt(fields: str, key_values: dict) -> str:
     Here is the list of field names: {fields}
     """
 
-def construct_validation_prompt(doc_type, rules: str, form_responses: str) -> str:    
+def construct_validation_prompt(doc_type, rules: str, form_responses: str) -> str:
+    example_question_answers = "```[{'Full name': 'John Doe'}, {'Date': '6/1/2024'}]```"
+    example_output = "```[{'Date': 'Date must be in MM/DD/YYYY format'}, {'Social security number': 'Social security number cannot be blank'}]````"
+
     return f"""
     You are a helpful assistant responsible for validating a {doc_type} tax form with a given set of rules. Using the form responses and rules, provide a list of required changes to the document, written only in JSON, using double quotes. Do not send back any response that is not JSON. **Only send back errors found in the list of rules!** If there are no errors, send back an empty object. The {doc_type} form will be given as a set of question-answer pairs, with the following example structure:
-    ```[{'Full name': 'John Doe'}, {'Date': '6/1/2024'}]```
+    {example_question_answers}
 
-    Here is an example of a valid output:\n ```[{'Date': 'Date must be in MM/DD/YYYY format'}, {'Social security number': 'Social security number cannot be blank'}]```
+    Here is an example of a valid output: 
+    {example_output}
 
-    Here is the list of form responses: \n{form_responses}
+    Here is the list of form responses:
+    {form_responses}
 
-    Here is the list of rules: \n{rules}
+    Here is the list of rules:
+    {rules}
     """
