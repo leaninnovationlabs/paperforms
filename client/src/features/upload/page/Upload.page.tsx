@@ -7,15 +7,18 @@ import ValidationService from "../../../service/validation.service";
 import Results from "../../../components/results/Results.component";
 import { IValidationRequirements } from "../store/upload.types";
 import { RotatingLines } from "react-loader-spinner";
-import { fields } from "../../../data/fields/fields.json";
-import { rules } from "../../../data/rules/rules.json";
 import { stringArrayToString } from "../../../util/string.util";
+import { forms } from "../../../data/forms.json";
 
 const UploadPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [rulesText, setRulesText] = useState(stringArrayToString(rules));
-  const [fieldsText, setFieldsText] = useState(stringArrayToString(fields));
+  const [fieldsText, setFieldsText] = useState(
+    stringArrayToString(forms.W9.fields)
+  );
+  const [rulesText, setRulesText] = useState(
+    stringArrayToString(forms.W9.rules)
+  );
 
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<IValidationRequirements | null>(null);
