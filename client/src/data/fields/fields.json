@@ -1,0 +1,10 @@
+{
+  "fields": [
+    "Name of entity/individual",
+    "Address",
+    "City, state, and ZIP code",
+    "Social security number",
+    "Signature",
+    "Date"
+  ]
+}
