@@ -3,20 +3,22 @@ import Hamburger from "../../../components/hamburger/Hamburger.component";
 import Logo from "../../../components/logo/Logo.component";
 import "./Upload.page.css";
 import RulesModal from "../../../components/config/ConfigModal.component";
-import { rulesTextW9 } from "../../../data/rules/Rules.data";
 import ValidationService from "../../../service/validation.service";
 import Results from "../../../components/results/Results.component";
 import { IValidationRequirements } from "../store/upload.types";
 import { RotatingLines } from "react-loader-spinner";
-import { fieldsTextW9 } from "../../../data/fields/fields.data";
+import { stringArrayToString } from "../../../util/string.util";
+import { forms } from "../../../data/forms.json";
 
 const UploadPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [rulesText, setRulesText] = useState(rulesTextW9);
-  const [fieldsText, setFieldsText] = useState(fieldsTextW9);
-
-  // const [formResponses, setFormResponses] = useState<string | null>(null);
+  const [fieldsText, setFieldsText] = useState(
+    stringArrayToString(forms.W9.fields)
+  );
+  const [rulesText, setRulesText] = useState(
+    stringArrayToString(forms.W9.rules)
+  );
 
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<IValidationRequirements | null>(null);
