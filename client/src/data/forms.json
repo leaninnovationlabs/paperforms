@@ -17,6 +17,20 @@
         "Signature is required.",
         "Date is required."
       ]
+    },
+    "W2": {
+      "fields": [
+        "Wages, tips, other compensation",
+        "Federal income tax withheld",
+        "First name",
+        "Last name"
+      ],
+      "rules": [
+        "Wages, tips, other compensation is required",
+        "Federal income tax withheld cannot be greater than \"Wages, tips, other compensation\"",
+        "First name is required",
+        "Last name is requried"
+      ]
     }
   }
 }
