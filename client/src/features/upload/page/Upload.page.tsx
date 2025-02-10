@@ -1,11 +1,11 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Hamburger from "../../../components/hamburger/Hamburger.component";
 import Logo from "../../../components/logo/Logo.component";
 import "./Upload.page.css";
 import RulesModal from "../../../components/config/ConfigModal.component";
 import ValidationService from "../../../service/validation.service";
 import Results from "../../../components/results/Results.component";
-import { IValidationRequirements } from "../store/upload.types";
+import { IDocumentType, IValidationRequirements } from "../store/upload.types";
 import { RotatingLines } from "react-loader-spinner";
 import { stringArrayToString } from "../../../util/string.util";
 import { forms } from "../../../data/forms.json";
@@ -13,12 +13,17 @@ import { forms } from "../../../data/forms.json";
 const UploadPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const [formType, setFormType] = useState<IDocumentType>("W9");
   const [fieldsText, setFieldsText] = useState(
     stringArrayToString(forms.W9.fields)
   );
   const [rulesText, setRulesText] = useState(
     stringArrayToString(forms.W9.rules)
   );
+
+  useEffect(() => {
+    console.log("Current form type: " + formType);
+  }, [formType]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<IValidationRequirements | null>(null);
@@ -30,6 +35,12 @@ const UploadPage = () => {
 
   const toggleModal = () => {
     setShowModal(!showModal);
+  };
+
+  const handleFormTypeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setFormType(event.target.value as IDocumentType);
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,9 +127,12 @@ const UploadPage = () => {
     return (
       <div className="select-area">
         <div className="select-container">
-          <select className="select-input">
-            <option value="w9">W9</option>
-            <option value="w2">W2</option>
+          <select
+            className="select-input"
+            onChange={(e) => handleFormTypeChange(e)}
+          >
+            <option value="W9">W9</option>
+            <option value="W2">W2</option>
           </select>
         </div>
         <div

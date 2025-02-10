@@ -3,6 +3,8 @@ export interface IValidateRequest {
   rules: string;
 }
 
+export type IDocumentType = "W9" | "W2";
+
 export type IValidationRequirement = Record<string, string>;
 export type IValidationRequirements = Array<IValidationRequirement>;
 
