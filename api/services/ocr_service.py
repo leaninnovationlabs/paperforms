@@ -12,6 +12,8 @@ from textractor import Textractor
 from textractor.entities.key_value import KeyValue
 from textractor.visualizers.entitylist import EntityList
 from textractor.data.constants import TextractFeatures
+from pdf2image import convert_from_bytes
+import io
 
 class OcrService:
     def __init__(self):
@@ -36,8 +38,18 @@ class OcrService:
         :param file: UploadFile object to upload
         :return: True if file was uploaded successfully, False otherwise
         """
+
+        pdf_type = "application/pdf"
+        file_content = await file.read()
+
+        if (file.content_type == pdf_type):
+            images = convert_from_bytes(file_content, fmt="png")
+            if (len(images) == 1):
+                img_byte_arr = io.BytesIO()
+                images[0].save(img_byte_arr, format='PNG')
+                file_content = img_byte_arr.getvalue()
+
         try:
-            file_content = await file.read()
             self.s3_client.put_object(Body=file_content, Bucket=self.bucket_name, Key=file.filename)
             return True
         except ClientError as ex:
