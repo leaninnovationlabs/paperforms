@@ -40,7 +40,10 @@ const UploadPage = () => {
   const handleFormTypeChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setFormType(event.target.value as IDocumentType);
+    const newFormType = event.target.value as IDocumentType;
+    setFormType(newFormType);
+    setFieldsText(stringArrayToString(forms[newFormType].fields));
+    setRulesText(stringArrayToString(forms[newFormType].rules));
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,6 +59,7 @@ const UploadPage = () => {
 
     const formData = new FormData();
     formData.append("fields", fieldsText);
+    formData.append("doc_type", formType);
     formData.append("file", file);
 
     setResults(null);
@@ -84,6 +88,7 @@ const UploadPage = () => {
 
       const formData = new FormData();
       formData.append("rules", rulesText);
+      formData.append("doc_type", formType);
       formData.append("form_responses", formResponses || "");
 
       setResults(null);

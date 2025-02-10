@@ -16,10 +16,11 @@ async def ping():
 @router.post("")
 async def validate_form(
     form_responses: str = Form(...),
-    rules: str = Form(...)
+    rules: str = Form(...),
+    doc_type: DocumentType = Form(...),
 ):
     try:
-        validation_service = ValidationService(doc_type=DocumentType.W9, form_responses=form_responses, rules=rules)
+        validation_service = ValidationService(doc_type=doc_type, form_responses=form_responses, rules=rules)
         prompt_response = validation_service.validate_with_llm()
         
         return JSONResponse(status_code=200, content={"response": prompt_response})

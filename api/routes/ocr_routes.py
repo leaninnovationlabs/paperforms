@@ -13,7 +13,8 @@ logger = SetupLogging()
 @router.post("")
 async def get_form_responses(
     file: UploadFile = File(...),
-    fields: str = Form(...)
+    fields: str = Form(...),
+    doc_type: DocumentType = Form(...),
 ):
     try:
         ocr_service = OcrService()
@@ -22,7 +23,7 @@ async def get_form_responses(
         for key, value in key_values.items():
             print("- " + key + ": " + value)
 
-        cleanup_service = CleanupService(doc_type=DocumentType.W9, key_values=key_values, fields=fields)
+        cleanup_service = CleanupService(doc_type=doc_type, key_values=key_values, fields=fields)
         prompt_response = cleanup_service.clean_fields()
         
         return JSONResponse(status_code=200, content={"response": prompt_response})
