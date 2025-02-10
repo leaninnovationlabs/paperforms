@@ -5,7 +5,7 @@ import "./Upload.page.css";
 import RulesModal from "../../../components/config/ConfigModal.component";
 import ValidationService from "../../../service/validation.service";
 import Results from "../../../components/results/Results.component";
-import { IValidationRequirements } from "../store/upload.types";
+import { IDocumentType, IValidationRequirements } from "../store/upload.types";
 import { RotatingLines } from "react-loader-spinner";
 import { stringArrayToString } from "../../../util/string.util";
 import { forms } from "../../../data/forms.json";
@@ -13,6 +13,7 @@ import { forms } from "../../../data/forms.json";
 const UploadPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const [formType, setFormType] = useState<IDocumentType>("W9");
   const [fieldsText, setFieldsText] = useState(
     stringArrayToString(forms.W9.fields)
   );
@@ -32,6 +33,15 @@ const UploadPage = () => {
     setShowModal(!showModal);
   };
 
+  const handleFormTypeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const newFormType = event.target.value as IDocumentType;
+    setFormType(newFormType);
+    setFieldsText(stringArrayToString(forms[newFormType].fields));
+    setRulesText(stringArrayToString(forms[newFormType].rules));
+  };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = event.target.files;
     if (!selectedFiles?.length) return;
@@ -45,6 +55,7 @@ const UploadPage = () => {
 
     const formData = new FormData();
     formData.append("fields", fieldsText);
+    formData.append("doc_type", formType);
     formData.append("file", file);
 
     setResults(null);
@@ -73,6 +84,7 @@ const UploadPage = () => {
 
       const formData = new FormData();
       formData.append("rules", rulesText);
+      formData.append("doc_type", formType);
       formData.append("form_responses", formResponses || "");
 
       setResults(null);
@@ -116,9 +128,12 @@ const UploadPage = () => {
     return (
       <div className="select-area">
         <div className="select-container">
-          <select className="select-input">
-            <option value="w9">W9</option>
-            <option value="w2">W2</option>
+          <select
+            className="select-input"
+            onChange={(e) => handleFormTypeChange(e)}
+          >
+            <option value="W9">W9</option>
+            <option value="W2">W2</option>
           </select>
         </div>
         <div
