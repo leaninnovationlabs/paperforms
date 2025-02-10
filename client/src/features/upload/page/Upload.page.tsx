@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Hamburger from "../../../components/hamburger/Hamburger.component";
 import Logo from "../../../components/logo/Logo.component";
 import "./Upload.page.css";
@@ -20,10 +20,6 @@ const UploadPage = () => {
   const [rulesText, setRulesText] = useState(
     stringArrayToString(forms.W9.rules)
   );
-
-  useEffect(() => {
-    console.log("Current form type: " + formType);
-  }, [formType]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<IValidationRequirements | null>(null);
