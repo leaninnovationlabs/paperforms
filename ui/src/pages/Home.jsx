@@ -1,13 +1,16 @@
 import DocIcon from "@/lib/assets/doc.svg"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom";
 import Checkbox from "../components/Checkbox"
+import Transition from "../components/Transition";
 
 
 
 const Home = (props) => {
-    const [selected, setSelected] = useState()
+    const [selected, setSelected] = useState();
+    const navigate = useNavigate()
     return (
-        <div className="w-full h-full pt-16">
+        <Transition>
             <div className="flex justify-center ">
                 <div>
                     <h1 className="text-3xl text-center ">
@@ -22,7 +25,7 @@ const Home = (props) => {
                         { id: "w2", label: "Form W2" },
                         { id: "w9", label: "Form W9" },
                         { id: "custom", label: "Create your Own" }
-                    ].map(({id, label}, idx) => (
+                    ].map(({ id, label }, idx) => (
                         <div data-selected={selected === id} key={idx} className="card"
                             onClick={() => selected === id ? setSelected(null) : setSelected(id)}
                         >
@@ -45,11 +48,12 @@ const Home = (props) => {
                 }
             </div>
             <div className="w-full flex justify-center mt-24">
-                <button disabled={!selected} className="bg-lil disabled:opacity-20 disabled:bg-gray-500 text-white h-[48px] px-16 rounded-md disabled:cursor-not-allowed cursor-pointer hover:opacity-70 disabled:translate-y-1.5 transition ease-[cubic-bezier(.17,.67,.56,.98)] duration-500">
+                <button disabled={!selected} className="bg-lil disabled:opacity-20 disabled:bg-gray-500 text-white h-[48px] px-16 rounded-md disabled:cursor-not-allowed cursor-pointer hover:opacity-70 disabled:translate-y-1.5 transition ease-[cubic-bezier(.17,.67,.56,.98)] duration-500"
+                    onClick={() => navigate("/upload/w9")}>
                     Next
                 </button>
             </div>
-        </div>
+        </Transition>
     )
 }
 

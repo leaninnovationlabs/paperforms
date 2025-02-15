@@ -3,19 +3,10 @@ import Logo from "@/lib/assets/logo.svg"
 import Avatar from "@/lib/assets/avatar.svg"
 import Restart from "@/lib/assets/refresh.svg"
 import Question from "@/lib/assets/question.svg"
-import { AnimatePresence, motion } from "motion/react"
-import { useLocation } from "react-router-dom"
 
-
-const animate = {
-    initial: { opacity: 0.01, x: 100 },
-    animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: -100 },
-    transition: { type: 'spring', stiffess: 100, damping: 30 },
-}
 
 const Layout = ({ children, ...props }) => {
-    const location = useLocation()
+    
     return (
         <div className="relative w-full h-screen grid grid-rows-[70px_1fr] overflow-x-hidden">
             <nav className="relative w-full h-full border-b flex items-center px-8">
@@ -33,11 +24,9 @@ const Layout = ({ children, ...props }) => {
                     
                 </div>
             </nav>
-            <AnimatePresence initial={false} mode="wait">
-                <motion.main key={location.pathname} {...animate} className="relative w-full h-full pt-6">
-                    {children}
-                </motion.main>
-            </AnimatePresence>
+
+            {children}
+    
         </div>
     )
 
