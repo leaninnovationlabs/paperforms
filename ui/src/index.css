@@ -21,7 +21,14 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-border: var(--border);
+  --color-lil: #9100ff;
   --shadow-2xl: var(--shadow-2xl)
+}
+
+@layer components {
+  .card {
+    @apply relative h-[270px] w-[220px] border-[rgba(236,236,236,0.43)] data-[selected=true]:border-lil transition-colors dark:border shadow-2xl rounded-2xl cursor-pointer p-4 flex flex-col items-center select-none;
+  }
 }
 
 @layer base { 
