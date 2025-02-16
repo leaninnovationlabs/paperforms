@@ -32,7 +32,7 @@ const Outlet = () => {
     const element = useOutlet();
 
     return (
-        <AnimatePresence mode="wait" initial={false}>
+        <AnimatePresence mode="sync" initial={false}>
             {element && cloneElement(element, { key: location.pathname })}
         </AnimatePresence>
     );

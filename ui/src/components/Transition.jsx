@@ -10,9 +10,11 @@ const animate = {
 
 const Transition = ({ children, className, ...props }) => {
     return (
-        <motion.main {...animate} className={cn("relative w-full h-full pt-16", className)} {...props}>
-            {children}
-        </motion.main>
+        <>
+            <motion.section {...animate} className={cn("absolute w-full h-full pt-16", className)} {...props}>
+                {children}
+            </motion.section>
+        </>
     )
 }
 
