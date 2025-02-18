@@ -4,6 +4,7 @@ import { AnimatePresence } from "framer-motion";
 import Layout from './pages/Layout'
 import Home from './pages/Home.page'
 import Upload from './pages/Upload.page'
+import Rules from './pages/Rules.page'
 
 // TODO: Code split if app grows too big
 // const Home = lazy(() => import('./pages/Home'));
@@ -24,6 +25,10 @@ export const PATHS = [
     {
         path: "/upload/*",
         element: createElement(Upload)
+    },
+    {
+        path: "/rules",
+        element: createElement(Rules)
     }
 ]
 

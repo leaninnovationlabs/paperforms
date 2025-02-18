@@ -32,6 +32,10 @@
   .card {
     @apply relative h-[270px] w-[220px] border-[rgba(236,236,236,0.43)] data-[selected=true]:border-lil transition-colors dark:border shadow-2xl rounded-2xl cursor-pointer p-4 flex flex-col items-center select-none;
   }
+
+  .widget {
+    @apply  w-fit h-fit cursor-pointer opacity-80 hover:opacity-100 transition-opacity disabled:opacity-20 disabled:cursor-auto
+  }
 }
 
 @layer base { 
