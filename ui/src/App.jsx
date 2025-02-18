@@ -2,8 +2,8 @@ import { createElement, cloneElement } from 'react';
 import { useLocation, useOutlet } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Layout from './pages/Layout'
-import Home from './pages/Home'
-import Upload from './pages/Upload'
+import Home from './pages/Home.page'
+import Upload from './pages/Upload.page'
 
 // TODO: Code split if app grows too big
 // const Home = lazy(() => import('./pages/Home'));
