@@ -1,56 +1,69 @@
-import { useState } from "react";
+import { useMemo } from "react";
 import Transition from "../components/Transition";
 import ImportIcon from "@/lib/assets/import.svg"
 import { useNavigate } from "react-router-dom";
+import { useShallow } from "zustand/react/shallow";
+import { useCallback } from "react";
+import useStore from "@/lib/store";
+import Input from "@/components/Input";
+import { useEffect } from "react";
 
-const Rules = () => {
+const Upload = () => {
+    const [selected, addRule, setRule] = useStore(useShallow((state) => [state.selected, state.addRule, state.setRule]))
+
+    const id = useMemo(() => selected?.id ?? "", [selected]);
+
     const navigate = useNavigate();
-    const [file, setFile] = useState()
-    const handleFileChange = (e) => {
-        const selectedFiles = e.target.files;
-        if (!selectedFiles?.length) return;
 
-        const newFile = selectedFiles[0];
-        setFile(newFile);
-    };
+    useEffect(() => {
+        // addRule()
+    }, [])
 
     return (
         <Transition>
             <div className="flex justify-center ">
                 <div>
                     <h1 className="text-3xl text-center ">
-                        {"Define Document Rules (optional)"}
+                        Define {selected?.label ?? ""} Rules <span className="opacity-50 text-2xl">(optional)</span>
                     </h1>
                     <p className="text-muted-foreground mt-2">
-                        None of your data will be shared. We just need it temporarily to create a report.
+                        Add rules corresponding to each field in your form <span className="underline">see example</span>
                     </p>
                 </div>
             </div>
-            <div className="flex justify-center mt-24 ">
 
-                <input
-                    type="file"
-                    id="file"
-                    hidden
-                    name="file"
-                    accept=".pdf,.png"
-                    onChange={handleFileChange}
-                />
-                <label htmlFor="file" className="max-w-[500px] w-full h-[300px] border border-dashed rounded-md flex flex-col gap-y-2 items-center justify-center text-muted-foreground cursor-pointer">
-                    <ImportIcon />
-                    <p data-file={!!file} className="text-sm h-[20px] data-[file=true]:opacity-100 opacity-0 transition-opacity">
-                        {file?.name ?? ""}
-                    </p>
-                </label>
+            <div className="flex justify-center mt-24 px-4">
+                <div className="flex flex-col gap-y-4 w-full max-w-[1000px]">
+                    {selected?.rules && selected.rules.map(({ id, field, text }, idx, arr) => (
+                        <div key={id} className="grid grid-cols-[auto_2fr_5fr_50px] gap-x-6 w-full">
+                            <div className="h-full mr-4 flex items-center text-xl text-muted-foreground ">
+                                {idx + 1}.
+                            </div>
+                            <Input placeholder="Field" value={field} />
+                            <Input placeholder="Rule" value={text} />
+                            {idx === 0 && <button className="w-full h-full border rounded-md cursor-pointer text-muted-foreground hover:text-foreground hover:bg-foreground/10 transition-colors"
+                                onClick={addRule}>
+                                +
+                            </button>}
+                            {idx === arr.length-1 && <button className="w-full h-full border rounded-md cursor-pointer text-muted-foreground hover:text-foreground hover:bg-foreground/10 transition-colors"
+                                onClick={console.log("TODO")}>
+                                -
+                            </button>}
+                        </div>
+                    ))}
+                </div>
             </div>
+
             <div className="w-full flex justify-center mt-24">
-                <button disabled={!file} className="bg-lil disabled:opacity-20 disabled:bg-gray-500 text-white h-[48px] px-16 rounded-md disabled:cursor-not-allowed cursor-pointer hover:opacity-70 disabled:translate-y-1.5 transition ease-[cubic-bezier(.17,.67,.56,.98)] duration-500"
-                    onClick={() => navigate("/upload/w9")}>
-                    Next
-                </button>
+                <div className="flex flex-col">
+                    <button disabled={true} className="btn"
+                        onClick={() => navigate("/" + id + "/rules")}>
+                        Next
+                    </button>
+                </div>
             </div>
         </Transition>
     )
 }
 
-export default Rules
+export default Upload;

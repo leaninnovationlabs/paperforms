@@ -5,11 +5,21 @@ import Restart from "@/lib/assets/refresh.svg"
 import Question from "@/lib/assets/question.svg"
 import BackIcon from "@/lib/assets/chevron-left.svg"
 import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useEffect } from "react"
+import useStore from "@/lib/store"
 
 
 const Layout = ({ children, ...props }) => {
     const navigate = useNavigate();
     const location = useLocation()
+    const selected = useStore(state => state.selected)
+
+    // Navigate home if we lose state
+    useEffect(() => {
+        if(!selected && location.pathname !== "/"){
+            navigate("/")
+        }
+    }, [selected])
 
     return (
         <div className="relative w-full h-screen grid grid-rows-[70px_1fr] overflow-x-hidden">

@@ -7,6 +7,7 @@
     --border: hsl(0 0 93%);
     --shadow-2xl: 0px 22px 30px -8px rgb(0 0 0 / 7%);
     --muted-foreground: hsl(0 0% 45.1%);
+    --muted: hsl(0 0% 96.1%);
   }
 
   .dark {
@@ -15,6 +16,7 @@
     --border: rgba(255, 255, 255, 0.21);
     --shadow-2xl: 0px 0px 20px 3px rgb(255 255 255 / 15%);
     --muted-foreground: hsl(0 0% 63.9%);
+    --muted: hsl(0 0% 14.9%);
   }
 }
 
@@ -26,6 +28,7 @@
   --color-lil: #9100ff;
   --shadow-2xl: var(--shadow-2xl);
   --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
 }
 
 @layer components {
@@ -35,6 +38,10 @@
 
   .widget {
     @apply  w-fit h-fit cursor-pointer opacity-80 hover:opacity-100 transition-opacity disabled:opacity-20 disabled:cursor-auto
+  }
+
+  .btn {
+    @apply bg-lil disabled:opacity-20 disabled:bg-gray-500 text-white h-[48px] px-4 min-w-[200px] rounded-md disabled:cursor-not-allowed cursor-pointer hover:opacity-70 disabled:translate-y-1.5 transition ease-[cubic-bezier(.17,.67,.56,.98)] duration-500;
   }
 }
 

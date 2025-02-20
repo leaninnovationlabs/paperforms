@@ -50,8 +50,8 @@ const Home = (props) => {
                 }
             </div>
             <div className="w-full flex justify-center mt-24">
-                <button disabled={!selected} className="bg-lil disabled:opacity-20 disabled:bg-gray-500 text-white h-[48px] px-16 rounded-md disabled:cursor-not-allowed cursor-pointer hover:opacity-70 disabled:translate-y-1.5 transition ease-[cubic-bezier(.17,.67,.56,.98)] duration-500"
-                    onClick={() => navigate(`/upload/${selected}`)}>
+                <button disabled={!selected} className="btn"
+                    onClick={() => navigate("/" + selected.id + "/upload")}>
                     Next
                 </button>
             </div>

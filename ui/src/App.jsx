@@ -23,11 +23,11 @@ export const PATHS = [
         element: createElement(Home)
     },
     {
-        path: "/upload/*",
+        path: "/:id/upload",
         element: createElement(Upload)
     },
     {
-        path: "/rules",
+        path: "/:id/rules",
         element: createElement(Rules)
     }
 ]
