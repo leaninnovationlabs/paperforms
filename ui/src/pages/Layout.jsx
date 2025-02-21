@@ -22,9 +22,9 @@ const Layout = ({ children, ...props }) => {
     }, [selected])
 
     return (
-        <div className="relative w-full h-screen grid grid-rows-[70px_1fr] overflow-x-hidden">
+        <div className="relative w-full h-screen grid grid-rows-[70px_1fr] ">
             <div />
-            <nav className="fixed top-0 left-0 h-[70px] w-full border-b flex items-center px-8 z-50">
+            <nav className="fixed top-0 left-0 h-[70px] w-full border-b flex items-center px-8 z-50 backdrop-blur-lg">
                 <Logo className="h-[35px] cursor-pointer" onClick={() => navigate("/")} />
                 <div className="absolute right-[calc(50%-25px)] -bottom-[25px] w-[50px] h-[50px] flex items-center justify-center rounded-full border p-3 bg-background pointer-events-none">
                     <Avatar className="h-[85%]" />
@@ -44,7 +44,7 @@ const Layout = ({ children, ...props }) => {
                     <BackIcon/>
                 </button>
             </div>
-            <main className="relative w-full h-full">
+            <main className="relative w-full h-full overflow-x-hidden">
                 {children}
             </main>
         </div>

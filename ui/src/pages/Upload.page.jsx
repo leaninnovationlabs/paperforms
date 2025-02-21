@@ -55,7 +55,7 @@ const Upload = () => {
                     </p>
                 </label>
             </div>
-            <div className="w-full flex justify-center mt-24">
+            <div className="w-full flex justify-center py-24">
                 <div className="flex flex-col">
 
 

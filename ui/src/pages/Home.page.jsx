@@ -49,7 +49,7 @@ const Home = (props) => {
                     })
                 }
             </div>
-            <div className="w-full flex justify-center mt-24">
+            <div className="w-full flex justify-center py-24">
                 <button disabled={!selected} className="btn"
                     onClick={() => navigate("/" + selected.id + "/upload")}>
                     Next
