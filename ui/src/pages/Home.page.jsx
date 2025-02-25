@@ -11,7 +11,7 @@ import { useShallow } from "zustand/react/shallow";
 
 const Home = (props) => {
     const all = useStore(state => state.allDocs)
-    const [selected, setSelected] = useStore(useShallow(state => [state.selected, state.setSelected]));
+    const [selected, setSelected] = useStore(useShallow(state => [state.scope, state.setScope]));
     const navigate = useNavigate()
 
     return (

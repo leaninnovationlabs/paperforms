@@ -7,7 +7,7 @@ import { useCallback } from "react";
 import useStore from "@/lib/store";
 
 const Upload = () => {
-    const [uploaded, setUploaded, selected] = useStore(useShallow((state) => [state.uploaded, state.setUploaded, state.selected]))
+    const [file, setFile, selected] = useStore(useShallow((state) => [state.file, state.setFile, state.scope]))
 
     const id = useMemo(() => selected?.id ?? "", [selected]);
 
@@ -18,11 +18,11 @@ const Upload = () => {
         if (!selectedFiles?.length) return;
 
         const newFile = selectedFiles[0];
-        setUploaded(newFile);
-    }, [setUploaded])
+        setFile(newFile);
+    }, [setFile])
 
     const useSample = () => {
-        setUploaded(selected.sample)
+        setFile(selected.sample)
         navigate("/" + id + "/rules")
     }
 
@@ -50,8 +50,8 @@ const Upload = () => {
                 />
                 <label htmlFor="file" className="max-w-[500px] w-full h-[300px] border border-dashed rounded-md flex flex-col gap-y-2 items-center justify-center text-muted-foreground cursor-pointer">
                     <ImportIcon />
-                    <p data-file={!!uploaded} className="text-sm h-[20px] data-[file=true]:opacity-100 opacity-0 transition-opacity">
-                        {uploaded?.name ?? ""}
+                    <p data-file={!!file} className="text-sm h-[20px] data-[file=true]:opacity-100 opacity-0 transition-opacity">
+                        {file?.name ?? ""}
                     </p>
                 </label>
             </div>
@@ -59,7 +59,7 @@ const Upload = () => {
                 <div className="flex flex-col">
 
 
-                    <button disabled={!uploaded} className="btn"
+                    <button disabled={!file} className="btn"
                         onClick={() => navigate("/" + id + "/rules")}>
                         Next
                     </button>
