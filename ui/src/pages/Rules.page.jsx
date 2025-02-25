@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useShallow } from "zustand/react/shallow";
 import useStore from "@/lib/store";
 import TextArea from "@/components/TextArea";
+import LinkIcon from "@/lib/assets/link.svg"
+import CloseIcon from "@/lib/assets/close.svg"
 
 const Rules = () => {
-    const [scope, rules, setRules, fields, setFields] = useStore(useShallow((state) => [state.scope, state.rules, state.setRules, state.fields, state.setFields]))
+    const [scope, rules, setRules, fields, setFields, file, setFile] = useStore(useShallow((state) => [state.scope, state.rules, state.setRules, state.fields, state.setFields, state.file, state.setFile]))
 
     const id = useMemo(() => scope?.id ?? "", [scope]);
 
@@ -17,7 +19,7 @@ const Rules = () => {
             <div className="flex justify-center ">
                 <div>
                     <h1 className="text-3xl text-center ">
-                        Define {scope?.label ?? ""} Rules 
+                        Define {scope?.label ?? ""} Rules
                     </h1>
                     <p className="text-muted-foreground mt-2">
                         Add your form fields and the rules you want to enforce <span className="underline">see example</span>
@@ -29,6 +31,13 @@ const Rules = () => {
             <div className="flex justify-center mt-18 px-4 pb-36">
 
                 <div className="flex flex-col gap-y-12 w-full max-w-[650px]">
+                    <div className="bg-muted grid grid-cols-[auto_auto_1fr] gap-x-2 py-4 px-2 rounded-md select-none items-center text-muted-foreground">
+                        <LinkIcon />
+                        <p className="text-sm">
+                            {file?.name ?? ""}
+                        </p>
+                        <CloseIcon className="ml-auto cursor-pointer" onClick={() => {setFile(null); navigate(-1)} }/>
+                    </div>
 
 
                     <div>
