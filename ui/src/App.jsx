@@ -5,6 +5,7 @@ import Layout from './pages/Layout'
 import Home from './pages/Home.page'
 import Upload from './pages/Upload.page'
 import Rules from './pages/Rules.page'
+import Results from './pages/Results.page'
 
 // TODO: Code split if app grows too big
 // const Home = lazy(() => import('./pages/Home'));
@@ -29,6 +30,10 @@ export const PATHS = [
     {
         path: "/:id/rules",
         element: createElement(Rules)
+    },
+    {
+        path: "/:id/results",
+        element: createElement(Results)
     }
 ]
 

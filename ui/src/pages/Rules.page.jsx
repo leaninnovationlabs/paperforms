@@ -8,11 +8,16 @@ import LinkIcon from "@/lib/assets/link.svg"
 import CloseIcon from "@/lib/assets/close.svg"
 
 const Rules = () => {
-    const [scope, rules, setRules, fields, setFields, file, setFile] = useStore(useShallow((state) => [state.scope, state.rules, state.setRules, state.fields, state.setFields, state.file, state.setFile]))
+    const [scope, rules, setRules, fields, setFields, file, setFile, generate] = useStore(useShallow((state) => [state.scope, state.rules, state.setRules, state.fields, state.setFields, state.file, state.setFile, state.generate]))
 
     const id = useMemo(() => scope?.id ?? "", [scope]);
 
     const navigate = useNavigate();
+
+    const execute = () => {
+        generate()
+        navigate("/" + id + "/results")
+    }
 
     return (
         <Transition>
@@ -61,7 +66,7 @@ const Rules = () => {
             <footer className="sticky bottom-0 bg-background w-full flex justify-center items-center h-24 border-t ">
                 <div className="flex flex-col">
                     <button disabled={!(fields && rules)} className="btn"
-                        onClick={() => navigate("/" + id + "/rules")}>
+                        onClick={execute}>
                         Validate Form
                     </button>
                 </div>
