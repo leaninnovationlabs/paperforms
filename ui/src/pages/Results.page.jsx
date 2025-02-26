@@ -85,7 +85,7 @@ const Results = () => {
 
                                         </div>
                                         <button className="btn btn-secondary mt-24 w-12 mx-auto"
-                                            onClick={() => { setFile(null); navigate("/" + scope.id + "/rules") }}>
+                                            onClick={() => navigate("/" + scope.id + "/rules") }>
                                             Refine Rules
                                         </button>
                                     </>
