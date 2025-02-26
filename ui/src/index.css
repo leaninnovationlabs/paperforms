@@ -43,6 +43,10 @@
   .btn {
     @apply bg-lil disabled:opacity-20 disabled:bg-gray-500 text-white h-[48px] px-4 min-w-[200px] rounded-md disabled:cursor-not-allowed cursor-pointer hover:opacity-70 disabled:translate-y-1.5 transition ease-[cubic-bezier(.17,.67,.56,.98)] duration-500;
   }
+
+  .btn-secondary {
+    @apply border bg-background text-foreground
+  }
 }
 
 @layer base { 

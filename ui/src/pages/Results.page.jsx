@@ -1,7 +1,11 @@
 import { useShallow } from "zustand/react/shallow";
 import useStore from "@/lib/store";
 import { motion, AnimatePresence } from "framer-motion";
-import Transition from "../components/Transition";
+import Transition from "@/components/Transition";
+import { useMemo } from "react";
+import SuccessIcon from "@/lib/assets/success.svg"
+import { useNavigate } from "react-router-dom";
+
 
 
 
@@ -16,7 +20,11 @@ const animate = {
 
 const Results = () => {
 
-    const [results, isThinking] = useStore(useShallow((state) => [state.results, state.isThinking]))
+    const [results, isThinking, scope, setFile] = useStore(useShallow((state) => [state.results, state.isThinking, state.scope, state.setFile]))
+
+    const isSuccess = useMemo(() => !(results && results.length), [results])
+
+    const navigate = useNavigate()
 
     return (
         <Transition>
@@ -27,7 +35,7 @@ const Results = () => {
                         <div className="flex justify-center ">
                             <div>
                                 <h1 className="text-3xl text-center ">
-                                    Hang tight. We're working on it ...
+                                    Validating form ...
                                 </h1>
                             </div>
                         </div>
@@ -45,13 +53,65 @@ const Results = () => {
                         <div className="flex justify-center ">
                             <div>
                                 <h1 className="text-3xl text-center ">
-                                    Results
+                                    {isSuccess ? "Your Form is Valid" : "We Found the Following Issues"}
                                 </h1>
-                                <p className="text-muted-foreground mt-2">
-                                    Add your form fields and the rules you want to enforce <span className="underline">see example</span>
+                                <p className="text-muted-foreground mt-2 text-center">
+                                    {isSuccess ? "Our procedure found your form matches up to the rules you specified." : "Please check the issues and upload another form or tweak your rules."}
                                 </p>
                             </div>
                         </div>
+                        <div className="flex justify-center mt-24 ">
+                            <div className="flex flex-col">
+
+
+
+
+                                {!isSuccess ?
+                                    <>
+
+                                        <div className="w-full max-w-[800px]">
+
+                                            {results.map((x, idx) => (
+                                                <div key={idx} className="grid grid-cols-[auto_1fr] border rounded-md [&>*]:py-4 [&>*]:px-12 bg-[red]/20 text-[#f5a698]">
+                                                    <div className="pr-4 border-r ">
+                                                        {Object.keys(x)[0]}
+                                                    </div>
+                                                    <div className="pl-4">
+                                                        {Object.values(x)[0]}
+                                                    </div>
+
+                                                </div>
+                                            ))}
+
+                                        </div>
+                                        <button className="btn btn-secondary mt-24 w-12 mx-auto"
+                                            onClick={() => { setFile(null); navigate("/" + scope.id + "/rules") }}>
+                                            Refine Rules
+                                        </button>
+                                    </>
+                                    :
+
+
+                                    <SuccessIcon className="text-[limegreen] w-full max-w-[200px] mb-24 mt-4" />
+
+
+
+                                }
+
+                                <button className="btn btn-secondary mt-4 w-12 mx-auto"
+                                    onClick={() => { setFile(null); navigate("/" + scope.id + "/upload") }}>
+                                    Upload another
+                                </button>
+
+
+
+                            </div>
+
+                        </div>
+
+
+
+
                     </motion.div>
                 }
 

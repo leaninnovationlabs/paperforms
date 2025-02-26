@@ -80,17 +80,19 @@ const Upload = () => {
                     <CloseIcon data-file={!!file} className="absolute top-3 right-3 data-[file=true]:opacity-100 opacity-0 transition-opacity" onClick={clear}/>
                 </label>
             </div>
-            <div className="w-full flex justify-center py-24">
+            <div className="w-full flex justify-center pt-16 pb-6">
                 <div className="flex flex-col">
+
+                    <p className="text-center mb-12 text-muted-foreground text-sm hover:text-foreground transition-colors cursor-pointer select-none" onClick={uploadSample}>
+                        or Use Sample File 
+                    </p>
 
 
                     <button disabled={!file} className="btn"
                         onClick={() => navigate("/" + id + "/rules")}>
                         Next
                     </button>
-                    <p className="text-center mt-6 text-muted-foreground text-sm hover:text-foreground transition-colors cursor-pointer select-none" onClick={uploadSample}>
-                        or Use Sample
-                    </p>
+
 
                 </div>
             </div>
