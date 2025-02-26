@@ -7,12 +7,13 @@ import BackIcon from "@/lib/assets/chevron-left.svg"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import useStore from "@/lib/store"
+import { useShallow } from "zustand/react/shallow"
 
 
 const Layout = ({ children, ...props }) => {
     const navigate = useNavigate();
     const location = useLocation()
-    const selected = useStore(state => state.selected)
+    const [selected, restart] = useStore(useShallow(state => [state.selected, state.restart]))
 
     // Navigate home if we lose state
     useEffect(() => {
@@ -30,7 +31,7 @@ const Layout = ({ children, ...props }) => {
                     <Avatar className="h-[85%]" />
                 </div>
                 <div className="ml-auto [&>*]:ml-6">
-                    <button className="widget">
+                    <button className="widget" onClick={()=>{restart(); navigate("/")}}>
                         <Restart className="h-[24px]" />
                     </button>
                     <button className="widget">

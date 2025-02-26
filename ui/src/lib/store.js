@@ -19,7 +19,7 @@ const useStore = create((set, get) => ({
     ...INIT,
     setScope: (id) => set(state => {
         const scope = (get().allDocs).filter(x => x.id === id)[0]
-        return ({ ...state, scope, rules: scope.defaultRules, fields: scope.defaultFields })
+        return ({ ...INIT, scope, rules: scope.defaultRules, fields: scope.defaultFields })
     }),
     setFile: (file) => set(state => ({ ...state, file })),
 
@@ -42,7 +42,8 @@ const useStore = create((set, get) => ({
         }
 
 
-    }
+    },
+    restart: () => set(state => ({ ...INIT }))
 
 }))
 

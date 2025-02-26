@@ -20,7 +20,7 @@ const animate = {
 
 const Results = () => {
 
-    const [results, isThinking, scope, setFile] = useStore(useShallow((state) => [state.results, state.isThinking, state.scope, state.setFile]))
+    const [results, isThinking, scope, setFile, file] = useStore(useShallow((state) => [state.results, state.isThinking, state.scope, state.setFile, state.file]))
 
     const isSuccess = useMemo(() => !(results && results.length), [results])
 
@@ -46,7 +46,7 @@ const Results = () => {
                         </div>
                     </motion.div>
                     :
-                    <motion.div key="not-thinking" className=" absolute w-full" {...animate}>
+                    <motion.div key="not-thinking" className=" absolute w-full pb-12" {...animate}>
 
 
 
@@ -60,8 +60,8 @@ const Results = () => {
                                 </p>
                             </div>
                         </div>
-                        <div className="flex justify-center mt-24 w-full ">
-                            <div className=" flex flex-col w-full items-center">
+                        <div className="flex justify-center mt-24">
+                            <div className=" flex flex-col items-center">
 
 
 
@@ -69,7 +69,7 @@ const Results = () => {
                                 {!isSuccess ?
                                     <>
 
-                                        <div className="w-full max-w-[1000px]">
+                                        <div className="w-full max-w-[1000px] mb-24">
 
                                             {results.map((x, idx) => (
                                                 <div key={idx} className="w-full grid grid-cols-[0.33fr_1fr] border rounded-md [&>*]:py-4 [&>*]:px-12 bg-[red]/20 text-[#f5a698]">
@@ -84,6 +84,9 @@ const Results = () => {
                                             ))}
 
                                         </div>
+
+                                        {file?.type == "image/png" && <img src={URL.createObjectURL(file)} alt="uploaded file"/>}
+
                                         <button className="btn btn-secondary mt-24 w-12 mx-auto"
                                             onClick={() => navigate("/" + scope.id + "/rules") }>
                                             Edit Rules

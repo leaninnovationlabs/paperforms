@@ -69,7 +69,7 @@ const Upload = () => {
                     id="file"
                     hidden
                     name="file"
-                    accept=".pdf,.png"
+                    accept=".pdf,.png" // TODO: pdf no work good
                     onChange={handleFileChange}
                 />
                 <label htmlFor="file" className="relative max-w-[500px] w-full h-[300px] border border-dashed rounded-md flex flex-col gap-y-2 items-center justify-center text-muted-foreground cursor-pointer">
@@ -83,9 +83,9 @@ const Upload = () => {
             <div className="w-full flex justify-center pt-16 pb-6">
                 <div className="flex flex-col">
 
-                    <p className="text-center mb-12 text-muted-foreground text-sm hover:text-foreground transition-colors cursor-pointer select-none" onClick={uploadSample}>
+                    {selected && selected?.sample && <p className="text-center mb-12 text-muted-foreground text-sm hover:text-foreground transition-colors cursor-pointer select-none" onClick={uploadSample}>
                         or Use Sample File 
-                    </p>
+                    </p>}
 
 
                     <button disabled={!file} className="btn"

@@ -1,5 +1,5 @@
-import w9 from "@/lib/sample/w9-no-issues.png"
-import w2 from "@/lib/sample/w9-no-issues.png"
+import w9 from "@/lib/sample/w9-date-issue.png"
+import w2 from "@/lib/sample/w9-date-issue.png"
 
 export const DOCUMENT_TYPES = [
     {
