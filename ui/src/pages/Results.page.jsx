@@ -56,12 +56,12 @@ const Results = () => {
                                     {isSuccess ? "Your Form is Valid" : "We Found the Following Issues"}
                                 </h1>
                                 <p className="text-muted-foreground mt-2 text-center">
-                                    {isSuccess ? "Our procedure found your form matches up to the rules you specified." : "Please check the issues and upload another form or tweak your rules."}
+                                    {isSuccess ? "Your form matches up with the rules you specified." : "Please check the issues and upload another form or tweak your rules."}
                                 </p>
                             </div>
                         </div>
-                        <div className="flex justify-center mt-24 ">
-                            <div className="flex flex-col">
+                        <div className="flex justify-center mt-24 w-full ">
+                            <div className=" flex flex-col w-full items-center">
 
 
 
@@ -69,14 +69,14 @@ const Results = () => {
                                 {!isSuccess ?
                                     <>
 
-                                        <div className="w-full max-w-[800px]">
+                                        <div className="w-full max-w-[1000px]">
 
                                             {results.map((x, idx) => (
-                                                <div key={idx} className="grid grid-cols-[auto_1fr] border rounded-md [&>*]:py-4 [&>*]:px-12 bg-[red]/20 text-[#f5a698]">
-                                                    <div className="pr-4 border-r ">
+                                                <div key={idx} className="w-full grid grid-cols-[0.33fr_1fr] border rounded-md [&>*]:py-4 [&>*]:px-12 bg-[red]/20 text-[#f5a698]">
+                                                    <div className="pr-4 border-r flex justify-center ">
                                                         {Object.keys(x)[0]}
                                                     </div>
-                                                    <div className="pl-4">
+                                                    <div className="pl-4 ">
                                                         {Object.values(x)[0]}
                                                     </div>
 
@@ -86,7 +86,7 @@ const Results = () => {
                                         </div>
                                         <button className="btn btn-secondary mt-24 w-12 mx-auto"
                                             onClick={() => navigate("/" + scope.id + "/rules") }>
-                                            Refine Rules
+                                            Edit Rules
                                         </button>
                                     </>
                                     :
