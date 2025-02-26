@@ -33,3 +33,14 @@ To run the frontend, run:
     cd client
     npm run dev
 ```
+
+## Gemini integration with paperforms
+- Why Gemini? https://x.com/_philschmid/status/1893926592977477751
+- How to get Gemini API key? https://aistudio.google.com/apikey
+- Pricing https://ai.google.dev/gemini-api/docs/pricing
+- Once you generate an API key, set the following variables in your .env
+    - GEMINI_API_KEY
+    - GEMINI_MODEL_NAME (set this to `gemini-2.0-flash`)
+- Run the fastapi as you normally would, and hit the endpoint at `http://localhost:8080/paperforms/v1/ner-extractor`
+- Check Bruno docs for examples
+- Check `api/sample_dummy_data` for sample documents of w2 and 29 forms
