@@ -1,0 +1,16 @@
+meta {
+  name: W9_extract
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/paperforms/v1/ner-extractor
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  file: @file(/Users/sumedh/Work/Code/paperforms/api/sample_dummy_data/w-9_sample.pdf)
+  document_type: W9
+}
