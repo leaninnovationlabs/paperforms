@@ -1,13 +1,48 @@
-import os, logging, json
+import os, logging, json, re
 from google import genai
 from google.genai import types
 from fastapi import UploadFile, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, create_model, Field
 from botocore.exceptions import ClientError
 from api.util.types import W2ExtractionResult, W9ExtractionResult
 
 class EntityExtractionResult(BaseModel):
     entities: dict
+
+def create_dynamic_schema(fields_str):
+    """
+    Create a dynamic Pydantic model based on user-provided fields.
+    
+    :param fields_str: String containing the fields to extract
+    :return: A dynamically created Pydantic model
+    """
+    fields_dict = {}
+    
+    # Parse the fields string to extract field names
+    field_lines = [line.strip() for line in fields_str.split('\n') if line.strip()]
+    for line in field_lines:
+        # Extract field name (handle bullet points, etc.)
+        if ':' in line:
+            field_name = line.split(':')[0].strip()
+        elif '-' in line and not line.startswith('-'):
+            # Handle cases like "Field Name - Description"
+            field_name = line.split('-')[0].strip()
+        elif '-' in line:
+            # Handle bullet points like "- Field Name"
+            field_name = line.split('-', 1)[1].strip()
+        else:
+            field_name = line.strip()
+            
+        # Clean up field name and convert to valid Python identifier
+        field_name = re.sub(r'[^\w\s]', '', field_name)  # Remove special characters
+        field_name = field_name.lower().replace(' ', '_')
+        
+        if field_name:
+            # Add field to the dictionary with string type and optional
+            fields_dict[field_name] = (str, Field(None, description=field_name))
+    
+    # Create and return a dynamic model
+    return create_model('DynamicExtractionResult', **fields_dict)
 
 class NERExtractorService:
     def __init__(self):
@@ -19,19 +54,20 @@ class NERExtractorService:
                                 api_key=self.gemini_api_key,
                                 http_options=types.HttpOptions(api_version='v1alpha') # API version to use
                                 )
-        self.document_type = None # Default document type to process
+        self.form_type = None # Default document type to process
 
-    async def extract_entities(self, contents, document_type: str) -> dict:
+    async def extract_entities(self, contents, form_type: str, fields: str = None) -> dict:
         """
         Extract entities from a given document type using the Gemini API.
 
         :param contents: PDF file contents in bytes
-        :param document_type: Type of document to process (either "W2" or "W9")
+        :param form_type: Type of document to process (either "W2", "W9", or "Custom")
+        :param fields: Comma-separated list of fields to extract (optional)
         :return: Dictionary of extracted entities
         """
         try:
             # Define valid document types
-            document_types = {
+            form_types = {
                 "W2": {
                     "prompt_path": "api/prompts/w2_prompt.txt",
                     "response_schema": W2ExtractionResult,
@@ -40,22 +76,50 @@ class NERExtractorService:
                     "prompt_path": "api/prompts/w9_prompt.txt",
                     "response_schema": W9ExtractionResult,
                 },
+                "Custom": {
+                    "prompt_path": "api/prompts/custom_prompt.txt",
+                    "response_schema": None,  # No predefined schema for Custom
+                },
             }
 
             # Validate document type
-            if document_type not in document_types:
-                raise ValueError(f"Unsupported document type: {document_type}")
+            if form_type not in form_types:
+                raise ValueError(f"Unsupported document type: {form_type}")
 
             # Select appropriate prompt file and response schema
-            prompt_path = document_types[document_type]["prompt_path"]
-            response_schema = document_types[document_type]["response_schema"]
+            prompt_path = form_types[form_type]["prompt_path"]
+            response_schema = form_types[form_type]["response_schema"]
 
             # Read prompt from the selected file
             with open(prompt_path, "r", encoding="utf-8") as file:
                 prompt = file.read()
+            
+            # If fields are specified, modify the prompt to only extract those fields
+            if fields:
+                if form_type == "Custom":
+                    # For Custom type, replace the placeholder with the fields
+                    prompt = prompt.replace("[FIELDS_PLACEHOLDER]", fields)
+                else:
+                    # For W2 and W9, modify the prompt to only extract the specified fields
+                    prompt_parts = prompt.split("Extract the following key entities")
+                    if len(prompt_parts) > 1:
+                        intro = prompt_parts[0]
+                        # Create a new prompt with only the specified fields
+                        prompt = f"{intro}Extract only the following key entities and return them in a JSON format:\n\n{fields}\n\nEnsure that:\n- The JSON response contains proper keys with extracted values.\n- If any field is missing, return an empty string for that key.\n- If you are unsure of any value for a given field, return an empty string for that key.\n- Return the extracted entities as a **valid JSON object**."
+            elif form_type == "Custom":
+                # For Custom type, fields are required
+                raise ValueError("Fields parameter is required for Custom document type")
+
+            # Create a dynamic schema if fields are specified
+            if fields:
+                # Create a dynamic schema based on the fields
+                dynamic_schema = create_dynamic_schema(fields)
+            else:
+                # Use the default schema for the document type
+                dynamic_schema = response_schema
 
             if contents:
-                # Extract entities from the text
+                # Extract entities from the text using the appropriate schema
                 response = self.client.models.generate_content(
                             model=self.gemini_model_name, 
                             contents=[
@@ -67,7 +131,7 @@ class NERExtractorService:
                             ],
                             config={
                                     'response_mime_type': 'application/json',
-                                    'response_schema': response_schema, # Force the response to be in the specified schema - Function calling
+                                    'response_schema': dynamic_schema, # Use dynamic schema for validation
                                     },
                         )
             return response.text
@@ -75,11 +139,12 @@ class NERExtractorService:
             logging.error(e)
             return dict()
 
-    async def process_file(self, file: UploadFile) -> dict:
+    async def process_file(self, file: UploadFile, fields: str = None) -> dict:
         """
         Upload a file and extract entities from it
 
         :param file: File to upload
+        :param fields: Comma-separated list of fields to extract (optional)
         :return: Dictionary of entities extracted
         """
         try:
@@ -87,7 +152,7 @@ class NERExtractorService:
             self.contents = await file.read()
 
             # Extract entities from the PDF file
-            key_values = await self.extract_entities(self.contents, self.document_type)
+            key_values = await self.extract_entities(self.contents, self.form_type, fields)
 
             print(json.loads(key_values))
             print(type(json.loads(key_values)))
@@ -147,4 +212,3 @@ class NERExtractorService:
         except Exception as e:
             logging.error(e)
             return dict()
-

@@ -11,13 +11,14 @@ post {
 }
 
 body:multipart-form {
-  file: @file(/Users/camilo/Documents/inputs/paperforms/w9-date-issue.png)
+  file: @file(/Users/sumedh/Work/Code/paperforms/api/sample_dummy_data/w-2_sample.pdf)
   fields: '''
-    - Name of entity/individual
+    - Name of entity
     - Address
     - City, state, and ZIP code
     - Social security number
     - Signature
     - Date
   '''
+  form_type: W2
 }
