@@ -30,8 +30,8 @@ const useStore = create((set, get) => ({
         set(state => ({ ...state, isThinking: true }))
 
         try {
-            const ocrRes = await ocr(get().fields, get().file)
-            const validateRes = await validate(get().rules, ocrRes.response)
+            const ocrRes = await ocr(get().fields, get().file, get().scope.id)
+            const validateRes = await validate(get().rules, ocrRes.response, get().scope.id)
             set(state => ({ ...state, results: validateRes.response }))
         }
         catch(e) {
