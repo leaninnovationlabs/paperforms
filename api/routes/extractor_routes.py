@@ -19,20 +19,20 @@ logger = SetupLogging()
 @router.post("")
 async def get_form_responses(
     file: UploadFile = File(...),
-    form_type: Literal["W2", "W9", "Custom"] = Form(...),  # Accepts only "W2" or "W9" or "Custom"
+    form_type: Literal["w2", "w9", "custom"] = Form(...),  # Accepts only "w2" or "w9" or "custom"
     fields: str = Form(...)
 ):
     """
     Endpoint to extract entities from an uploaded document.
 
     :param file: The uploaded file (PDF format).
-    :param form_type: The type of document to process ("W2" or "W9" or "Custom").
+    :param form_type: The type of document to process ("w2" or "w9" or "custom").
     :return: Extracted entity responses in JSON format.
     """
     try:
         # Validate document type
-        if form_type not in ["W2", "W9", "Custom"]:
-            raise HTTPException(status_code=400, detail="Invalid document type. Supported types: 'W2', 'W9', 'Custom'")
+        if form_type not in ["w2", "w9", "custom"]:
+            raise HTTPException(status_code=400, detail="Invalid document type. Supported types: 'w2', 'w9', 'custom'")
         
         if selected_model == "gemini":
             ner_extractor_service = NERExtractorService()
@@ -41,17 +41,17 @@ async def get_form_responses(
             ner_extractor_service.form_type = form_type
 
             # Process file and extract entities
-            prompt_response = await ner_extractor_service.process_file(file, fields)
+            key_values = await ner_extractor_service.process_file(file, fields)
             
         elif selected_model == "textract":
             ocr_service = OcrService()
             key_values = await ocr_service.upload_and_process_file(file)
 
-            for key, value in key_values.items():
-                print("- " + key + ": " + value)
+        for key, value in key_values.items():
+            print("- " + key + ": " + value)
 
-            cleanup_service = CleanupService(doc_type=form_type, key_values=key_values, fields=fields)
-            prompt_response = cleanup_service.clean_fields()
+        cleanup_service = CleanupService(doc_type=form_type, key_values=key_values, fields=fields)
+        prompt_response = cleanup_service.clean_fields()
             
         return JSONResponse(status_code=200, content={"response": prompt_response})
 

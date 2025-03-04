@@ -14,7 +14,7 @@ logger = SetupLogging()
 async def validate_form(
     form_responses: str = Form(...),
     rules: str = Form(...),
-    form_type: Literal["W2", "W9", "Custom"] = Form(...)
+    form_type: Literal["w2", "w9", "custom"] = Form(...)
 ):
     try:
         validation_service = ValidationService(doc_type=form_type, form_responses=form_responses, rules=rules)

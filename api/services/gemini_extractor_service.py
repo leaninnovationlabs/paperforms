@@ -61,22 +61,22 @@ class NERExtractorService:
         Extract entities from a given document type using the Gemini API.
 
         :param contents: PDF file contents in bytes
-        :param form_type: Type of document to process (either "W2", "W9", or "Custom")
+        :param form_type: Type of document to process (either "w2", "w9", or "custom")
         :param fields: Comma-separated list of fields to extract (optional)
         :return: Dictionary of extracted entities
         """
         try:
             # Define valid document types
             form_types = {
-                "W2": {
+                "w2": {
                     "prompt_path": "api/prompts/w2_prompt.txt",
                     "response_schema": W2ExtractionResult,
                 },
-                "W9": {
+                "w9": {
                     "prompt_path": "api/prompts/w9_prompt.txt",
                     "response_schema": W9ExtractionResult,
                 },
-                "Custom": {
+                "custom": {
                     "prompt_path": "api/prompts/custom_prompt.txt",
                     "response_schema": None,  # No predefined schema for Custom
                 },
@@ -96,19 +96,19 @@ class NERExtractorService:
             
             # If fields are specified, modify the prompt to only extract those fields
             if fields:
-                if form_type == "Custom":
+                if form_type == "custom":
                     # For Custom type, replace the placeholder with the fields
                     prompt = prompt.replace("[FIELDS_PLACEHOLDER]", fields)
                 else:
-                    # For W2 and W9, modify the prompt to only extract the specified fields
+                    # For w2 and w9, modify the prompt to only extract the specified fields
                     prompt_parts = prompt.split("Extract the following key entities")
                     if len(prompt_parts) > 1:
                         intro = prompt_parts[0]
                         # Create a new prompt with only the specified fields
                         prompt = f"{intro}Extract only the following key entities and return them in a JSON format:\n\n{fields}\n\nEnsure that:\n- The JSON response contains proper keys with extracted values.\n- If any field is missing, return an empty string for that key.\n- If you are unsure of any value for a given field, return an empty string for that key.\n- Return the extracted entities as a **valid JSON object**."
-            elif form_type == "Custom":
+            elif form_type == "custom":
                 # For Custom type, fields are required
-                raise ValueError("Fields parameter is required for Custom document type")
+                raise ValueError("Fields parameter is required for custom document type")
 
             # Create a dynamic schema if fields are specified
             if fields:
@@ -134,6 +134,7 @@ class NERExtractorService:
                                     'response_schema': dynamic_schema, # Use dynamic schema for validation
                                     },
                         )
+            print("Response: ", response.text)
             return response.text
         except Exception as e:
             logging.error(e)

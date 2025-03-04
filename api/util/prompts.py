@@ -22,7 +22,9 @@ def construct_validation_prompt(doc_type, rules: str, form_responses: str) -> st
 2. Check if they comply with the provided rules
 3. Return ONLY the validation errors in JSON format
 
-Return an empty array [] if no errors are found. Only report errors that violate the rules provided."""
+Return an empty array [] if no errors are found. Only report errors that violate the rules provided.
+
+Note: The examples below are for illustrative purposes only. Generate validation outputs based solely on the actual form responses and rules provided."""
 
     example_section = f"""
 Example form responses:
