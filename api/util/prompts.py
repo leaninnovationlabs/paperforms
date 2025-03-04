@@ -1,7 +1,7 @@
 def construct_cleanup_prompt(fields: str, key_values: dict) -> str:
     initial_task = """You are cleaning up extracted form field data. Your task is to:
-1. Remove any keys not found in the provided list of fields
-2. Standardize field names to match exactly those in the fields list
+1. Standardize field names to match exactly those in the fields list
+2. Remove any keys not found in the provided list of fields
 3. Return a clean, bulleted list of fields with their corresponding values
 4. Provide no introduction or explanation in your response"""
 
