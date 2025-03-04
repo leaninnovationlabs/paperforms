@@ -50,6 +50,10 @@ class NERExtractorService:
         self.contents = None # Contents of the file to extract entities from
         self.gemini_api_key = os.getenv("GEMINI_API_KEY") # API key for the Gemini API
         self.gemini_model_name = os.getenv("GEMINI_MODEL_NAME") # Model to use for entity extraction
+        if not self.gemini_api_key:
+            raise ValueError("GEMINI_API_KEY environment variable is not set")
+        if not self.gemini_model_name:
+            raise ValueError("GEMINI_MODEL_NAME environment variable is not set")
         self.client = genai.Client(
                                 api_key=self.gemini_api_key,
                                 http_options=types.HttpOptions(api_version='v1alpha') # API version to use

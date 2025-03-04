@@ -11,7 +11,7 @@ from api.services.cleanup_service import CleanupService
 
 import os, dotenv
 dotenv.load_dotenv()
-selected_model = os.getenv("SELECTED_MODEL")
+selected_model = os.getenv("SELECTED_MODEL",'textract')
 
 router = APIRouter()
 logger = SetupLogging()

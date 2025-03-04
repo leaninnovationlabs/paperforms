@@ -7,6 +7,8 @@ import re
 class CleanupService:
     def __init__(self, doc_type, key_values: dict, fields):
         self.openai_key = os.getenv("OPENAI_API_KEY")
+        if not self.openai_key:
+            raise ValueError("OPENAI_API_KEY environment variable is not set")
         
         self.llm = ChatOpenAI(
             api_key=self.openai_key,

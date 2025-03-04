@@ -20,7 +20,7 @@ def construct_validation_prompt(doc_type, rules: str, form_responses: str) -> st
     initial_task = f"""You are validating a {doc_type} tax form against specific rules. Your task is to:
 1. Analyze the form responses
 2. Check if they comply with the provided rules
-3. Return ONLY the validation errors in JSON format
+3. For the fields that do not comply, return ONLY the validation errors in JSON format
 
 Return an empty array [] if no errors are found. Only report errors that violate the rules provided.
 
