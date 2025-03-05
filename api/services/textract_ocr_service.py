@@ -19,7 +19,9 @@ class OcrService:
         self.secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
         self.region = os.getenv("AWS_REGION")
         self.bucket_name = os.getenv("AWS_BUCKET")
-        
+        if not self.access_key or not self.secret_key or not self.region or not self.bucket_name:
+            raise ValueError("AWS credentials or bucket name not set")
+
         self.s3_client = boto3.client("s3")
         
         self.textract_client = boto3.client(

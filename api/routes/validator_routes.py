@@ -1,5 +1,6 @@
-from fastapi import APIRouter, File, Form, UploadFile, HTTPException
+from fastapi import APIRouter, Form, HTTPException
 from fastapi.responses import JSONResponse
+from typing import Literal
 
 from api.services.validation_service import ValidationService
 from api.util.logging import SetupLogging
@@ -9,17 +10,14 @@ from api.util.types import DocumentType
 router = APIRouter()
 logger = SetupLogging()
 
-@router.get("")
-async def ping():
-    return JSONResponse(status_code=200, content={"message": "pong"})
-
 @router.post("")
 async def validate_form(
     form_responses: str = Form(...),
-    rules: str = Form(...)
+    rules: str = Form(...),
+    form_type: Literal["w2", "w9", "custom"] = Form(...)
 ):
     try:
-        validation_service = ValidationService(doc_type=DocumentType.W9, form_responses=form_responses, rules=rules)
+        validation_service = ValidationService(doc_type=form_type, form_responses=form_responses, rules=rules)
         prompt_response = validation_service.validate_with_llm()
         
         return JSONResponse(status_code=200, content={"response": prompt_response})
